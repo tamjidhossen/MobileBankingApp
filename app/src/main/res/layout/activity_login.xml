@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/m_toolbar_height">
+
+        <!--        &lt;!&ndash; Back Button: Click to go back &ndash;&gt;-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/toolbarBackBtn"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:src="@drawable/ic_back"-->
+        <!--            android:layout_centerVertical="true"-->
+        <!--            android:background="@android:color/transparent"-->
+        <!--            android:padding="15dp"-->
+        <!--            android:contentDescription="Back Button" />-->
+
+        <!-- TextView: Toolbar Title -->
+        <TextView
+            android:id="@+id/toolbarTitleTv"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Robota Banking Log In"
+            android:textColor="@color/colorGray01"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorGray02"
+            android:alpha="0.21" />
+
+
+
+    </RelativeLayout>
+
+    <!-- ImageView: Show App Logo -->
+    <ImageView
+        android:id="@+id/LoginPageLogo"
+        android:src="@drawable/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="@dimen/m_toolbar_height" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LoginPageLogo"
+        android:layout_alignParentBottom="true">
+
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:cardCornerRadius="28dp"
+            android:layout_marginBottom="-23dp"
+            android:id="@+id/card_view"
+            app:cardBackgroundColor="@color/Navy">
+
+            <RelativeLayout
+                android:layout_below="@+id/toolbarRl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="30dp">
+
+                <TextView
+                    android:id="@+id/loginLabelTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="LOG IN"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailTil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@+id/loginLabelTv"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    android:hint="Email"
+                    android:textColorHint="@color/colorDarkGray01">
+
+                    <EditText
+                        android:id="@+id/emailEt"
+                        android:layout_width="match_parent"
+                        android:inputType="textEmailAddress"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordTil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    android:layout_below="@+id/emailTil"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    android:hint="Password"
+                    android:textColorHint="@color/colorDarkGray01"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/passwordEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/loginBtn"
+                    android:text="LOGIN"
+                    android:textColor="@color/Navy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAllCaps="false"
+                    android:layout_below="@+id/passwordTil"
+                    android:minHeight="@dimen/m_button_height"
+                    android:backgroundTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/forgotPasswordTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/loginBtn"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Forgot Password?"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/white"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/orLineTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/forgotPasswordTv"
+                    android:layout_marginTop="30dp"
+                    android:text="------------------------------------ or ------------------------------------"
+                    android:textStyle="italic"
+                    android:textColor="@color/white"
+                    android:layout_centerHorizontal="true" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/noAccSignUpBtn"
+                    android:text="Sign Up"
+                    android:textColor="@color/Navy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAllCaps="false"
+                    android:layout_below="@+id/orLineTv"
+                    android:minHeight="@dimen/m_button_height"
+                    android:backgroundTint="@color/white" />
+
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</RelativeLayout>
+

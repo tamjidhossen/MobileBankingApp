@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MobileBankingApp</string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? <b> Register</b></string>
+    <string name="already_have_an_account_login">Already have an account? <b>Login</b></string>
+</resources>
