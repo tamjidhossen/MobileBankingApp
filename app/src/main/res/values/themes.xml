@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MobileBankingApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.MobileBankingApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/Navy</item>
         <item name="colorPrimaryVariant">@color/DarkGreen</item>
         <!-- Apply statusBarColor and windowLightStatusBar only for API level 23 and above -->
