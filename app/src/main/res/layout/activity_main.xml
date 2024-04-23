@@ -10,7 +10,10 @@
         android:id="@+id/fragmentsFl"
         android:layout_above="@id/bottomNv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" >
+
+    </FrameLayout>
+
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:layout_width="match_parent"
@@ -32,10 +35,11 @@
         android:id="@+id/transactionBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_qr"
+        android:src="@drawable/ic_transfer"
         app:layout_anchor="@id/bottomNv"
         app:fabCustomSize="72dp"
-        app:maxImageSize="34dp" />
+        app:maxImageSize="34dp"
+        app:backgroundTint="@color/Navy" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

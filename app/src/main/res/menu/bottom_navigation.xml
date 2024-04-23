@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/menuStatistics"
-        android:title="Notification"
+        android:title="Statistics"
         android:icon="@drawable/ic_statistics" />
 
     <item
