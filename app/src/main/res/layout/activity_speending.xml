@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SpeendingActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Spending Analysis"
+            
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:id="@+id/icon1"
+            android:src="@drawable/ic_expenses"
+            android:layout_alignParentEnd="false"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Foods"
+            android:textSize="20dp"
+            android:id="@+id/expenseInFood"
+            android:layout_toRightOf="@id/icon1"
+            android:layout_marginTop="15dp"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="+25%"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/expenseInFood"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="75dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:id="@+id/icon2"
+            android:src="@drawable/ic_expenses"
+            android:layout_alignParentEnd="false"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rent"
+            android:textSize="20dp"
+            android:id="@+id/ExpenseInRent"
+            android:layout_toRightOf="@id/icon2"
+            android:layout_marginTop="15dp"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ExpenseInRentTV"
+            android:text="25%"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/ExpenseInRent"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:id="@+id/icon3"
+            android:src="@drawable/ic_expenses"
+            android:layout_alignParentEnd="false"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shopping"
+            android:textSize="20dp"
+            android:id="@+id/ExpenseInShoping"
+            android:layout_toRightOf="@id/icon3"
+            android:layout_marginTop="15dp"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ExpenseInShopingTV"
+            android:text="000.00"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/ExpenseInShoping"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="205dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+
+        <ImageView
+            android:id="@+id/icon4"
+            android:layout_width="40dp"
+
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="false"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_expenses" />
+
+        <TextView
+            android:id="@+id/expenseInTransport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/icon4"
+            android:text="Transpot"
+            android:textSize="20dp"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@id/expenseInTransport"
+            android:text="+25%"
+            android:textAlignment="textEnd"
+            android:textSize="20dp"
+
+            />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="38dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="268dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+
+        <ImageView
+            android:id="@+id/icon5"
+            android:layout_width="40dp"
+
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="false"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_expenses" />
+
+        <TextView
+            android:id="@+id/healthExpense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/icon5"
+            android:text="Others"
+            android:textSize="20dp"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@id/healthExpense"
+            android:text="+25%"
+            android:textAlignment="textEnd"
+            android:textSize="20dp"
+
+            />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="layout for trend"/>
+
+    </RelativeLayout>
+</RelativeLayout>

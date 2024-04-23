@@ -1,14 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StatisticsFragment">
+    android:orientation="vertical"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Health Summary -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:text="STATISTIC"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="30dp"
 
-</FrameLayout>
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/expenseCard"
+        android:background="@drawable/shape_rect"
+        >
+
+        <TextView
+            android:id="@+id/tot_expenseStatic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Expenses"
+            android:textSize="25dp"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/totalExpense"
+            android:layout_below="@id/tot_expenseStatic"
+            android:text="00000.0"
+            android:textStyle="bold"
+            android:textSize="19dp"
+            android:padding="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_below="@id/totalExpense"
+            android:textAlignment="textEnd"
+            android:text="test Message about Expenses"
+            android:textColor="@color/Red"
+            android:id="@+id/messageForExpenses"
+            android:layout_marginRight="15dp"
+            android:paddingBottom="5dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:id="@+id/upArrowImageView"
+            android:src="@drawable/ic_expenses"
+            android:layout_alignParentEnd="false"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expenses"
+            android:textSize="20dp"
+            android:id="@+id/healthExpense"
+            android:layout_toRightOf="@id/upArrowImageView"
+            android:layout_marginTop="15dp"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="+25%"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/healthExpense"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape_rect"
+        android:backgroundTint="#DAE6F1">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_income"
+            android:id="@+id/IncomeIcon"
+            android:layout_alignParentEnd="false"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Income"
+            android:textSize="20dp"
+            android:id="@+id/healthIncomeText"
+            android:layout_toRightOf="@id/IncomeIcon"
+            android:layout_marginTop="15dp"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="+25%"
+            android:textSize="20dp"
+            android:layout_toRightOf="@id/healthIncomeText"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="see more details.."
+        android:textAlignment="textEnd"
+        android:textSize="16dp"
+        android:clickable="true"
+
+        android:layout_marginRight="15dp"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+
+        >
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:title="Pie chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="see more details.."
+        android:textAlignment="textEnd"
+        android:textSize="16dp"
+        android:clickable="true"
+
+        android:layout_marginRight="15dp"
+        />
+
+
+
+
+
+</LinearLayout>
