@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".SpeendingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FinancialHealthActivity"
+            android:exported="false" />
+        <activity
             android:name=".TransactionActivity"
             android:exported="false" />
         <activity
