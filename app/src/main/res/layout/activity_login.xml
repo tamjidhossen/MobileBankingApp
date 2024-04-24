@@ -106,6 +106,7 @@
 
                     <EditText
                         android:id="@+id/emailEt"
+                        android:autofillHints="emailAddress"
                         android:layout_width="match_parent"
                         android:inputType="textEmailAddress"
                         android:layout_height="wrap_content"/>
@@ -129,6 +130,7 @@
 
                     <EditText
                         android:id="@+id/passwordEt"
+                        android:autofillHints="password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword" />
@@ -167,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/forgotPasswordTv"
                     android:layout_marginTop="30dp"
-                    android:text="------------------------------------ or ------------------------------------"
+                    android:text="~ or ~"
                     android:textStyle="italic"
                     android:textColor="@color/white"
                     android:layout_centerHorizontal="true" />

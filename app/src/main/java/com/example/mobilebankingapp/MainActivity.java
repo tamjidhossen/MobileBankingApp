@@ -3,6 +3,7 @@ package com.example.mobilebankingapp;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.mobilebankingapp.databinding.ActivityLoginBinding;
 import com.example.mobilebankingapp.databinding.ActivityMainBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -49,6 +52,17 @@ public class MainActivity extends AppCompatActivity {
             startLoginOptions();
             finish();
         } else {
+
+            //not working.......
+            FloatingActionButton transactionBtn = findViewById(R.id.transactionBtn);
+            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_transfer);
+            if (drawable != null) {
+                drawable = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(drawable, ContextCompat.getColor(this, R.color.white));
+                transactionBtn.setImageDrawable(drawable);
+            }
+            //...................
+
             showHomeFragment();
 
             //handle bottomNv item clicks to navigate between fragments

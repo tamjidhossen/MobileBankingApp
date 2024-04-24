@@ -135,10 +135,14 @@ public class RegisterActivity extends AppCompatActivity {
         hashMap.put ("phoneNumber", "");
         hashMap.put("email", registerUserEmail);
         hashMap.put("uid", registerUserUid);
+        hashMap.put("cvc", "");
+        hashMap.put("cardValidity", "");
+        hashMap.put("balance", "");
+
 
         //Save to firebase DB
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(registerUserUid)
+        reference.child(registerUserUid).child("Profile")
                 .setValue(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
