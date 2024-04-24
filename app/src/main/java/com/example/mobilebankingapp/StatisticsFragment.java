@@ -35,10 +35,10 @@ public class StatisticsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         // Find the TextView
-        Button button = rootView.findViewById(R.id.btnHealth);
+        Button buttonHealth = rootView.findViewById(R.id.btnHealth);
 
         // Set OnClickListener on the TextView
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonHealth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start the activity you want to open
@@ -46,7 +46,16 @@ public class StatisticsFragment extends Fragment {
             }
         });
 
+        Button buttonBehaviour = rootView.findViewById(R.id.btnBehaviour);
 
+        // Set OnClickListener on the TextView
+        buttonBehaviour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the activity you want to open
+                openFinancialSpeendingActivity();
+            }
+        });
         PieChart pieChart = rootView.findViewById(R.id.pieChart);
 
 
@@ -71,6 +80,10 @@ public class StatisticsFragment extends Fragment {
     }
     private void openFinancialHealthActivity() {
         Intent intent = new Intent(getActivity(), FinancialHealthActivity.class);
+        startActivity(intent);
+    }
+    private void openFinancialSpeendingActivity() {
+        Intent intent = new Intent(getActivity(), SpeendingActivity.class);
         startActivity(intent);
     }
 }
