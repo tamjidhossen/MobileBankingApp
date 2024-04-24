@@ -17,9 +17,10 @@
             android:id="@+id/title1"
             android:text="Economic health Analysis: "/>
         <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
             android:layout_width="match_parent"
-            android:layout_below="@id/title1"
-            android:layout_height="wrap_content"/>
+            android:layout_height="300dp"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.mobilebankingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.util.ArrayList;
+import java.util.ArrayList;import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class StatisticsFragment extends Fragment {
 
@@ -28,7 +32,23 @@ public class StatisticsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
+        View view = inflater.inflate(R.layout.fragment_statistics, container, false);
+
+        // Find the TextView
+        Button button = rootView.findViewById(R.id.btnHealth);
+
+        // Set OnClickListener on the TextView
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the activity you want to open
+                openFinancialHealthActivity();
+            }
+        });
+
+
         PieChart pieChart = rootView.findViewById(R.id.pieChart);
+
 
         // Sample data
         ArrayList<PieEntry> entries = new ArrayList<>();
@@ -48,5 +68,9 @@ public class StatisticsFragment extends Fragment {
         pieChart.invalidate();
 
         return rootView;
+    }
+    private void openFinancialHealthActivity() {
+        Intent intent = new Intent(getActivity(), FinancialHealthActivity.class);
+        startActivity(intent);
     }
 }
