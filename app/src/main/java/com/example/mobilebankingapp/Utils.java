@@ -17,6 +17,16 @@ public class Utils {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static final String[] categories = {
+            "Transportation",
+            "Entertainment",
+            "Healthcare",
+            "Travel",
+            "Food",
+            "Rent",
+            "Others"
+    };
+
     public static long getTimestamp() {
         return System.currentTimeMillis();
     }
