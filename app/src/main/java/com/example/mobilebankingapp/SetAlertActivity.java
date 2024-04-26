@@ -1,5 +1,6 @@
 package com.example.mobilebankingapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,7 +24,6 @@ public class SetAlertActivity extends AppCompatActivity {
         //drop down box
         binding = ActivitySetAlertBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setContentView(binding.getRoot());
 
         //Firebase Auth for auth related tasks
         firebaseAuth = FirebaseAuth.getInstance();
@@ -32,8 +32,12 @@ public class SetAlertActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterCategories = new ArrayAdapter<>(this, R.layout.row_category_act, Utils.categories);
         binding.categorySetAlert.setAdapter(adapterCategories);
 
-        setContentView(R.layout.activity_set_alert);
-
-
     }
+
+
+    private String getAccountNumberFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(RegisterActivity.SHARED_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(RegisterActivity.ACCOUNT_NUMBER_KEY, "");
+    }
+
 }

@@ -9,7 +9,8 @@
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/m_toolbar_height">
+        android:layout_height="@dimen/m_toolbar_height"
+        >
 
         <!--ImageButton: Click to go-back-->
         <ImageButton
@@ -42,7 +43,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="20dp">
 
         <RelativeLayout
             android:layout_width="match_parent"

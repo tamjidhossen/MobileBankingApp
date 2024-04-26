@@ -5,114 +5,149 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
     tools:context=".SetAlertActivity">
-    <TextView
-        android:id="@+id/pageTitleAlertTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set Your Alert"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:id="@+id/MonthlyEpensesLimitTV"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pageTitleAlertTV"
-        android:text="Set monthly expenses limit"
-        android:textSize="18sp"
-        />
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/MontlyExpenseIT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/MonthlyEpensesLimitTV"
-        app:boxCornerRadiusBottomEnd="20dp"
-        app:boxCornerRadiusBottomStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp"
-        app:boxCornerRadiusTopStart="20dp"
-        android:hint="Enter the amount"
-        android:textColorHint="@color/colorDarkGray01">
 
-        <EditText
-            android:id="@+id/monthyExpensesLimitET"
+    <RelativeLayout
+        android:id="@+id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/m_toolbar_height">
+
+        <!--ImageButton: Click to go-back-->
+        <ImageButton
+            android:id="@+id/toolbarBackBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            android:background="@android:color/transparent"
+            android:padding="15dp"
+            android:layout_centerVertical="true" />
+
+        <!--TextView: Toolbar Title-->
+        <TextView
+            android:id="@+id/pageTitleAlertTV"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Budget Planning"/>
+
+        <!--View: To make Toolbar look separate from other UI-->
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="1dp"
+            android:background="@color/colorGray02"
+            android:layout_alignParentBottom="true"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <TextView
-        android:id="@+id/MonthlyEpensesLimitCatagoriesTV"
-        android:layout_marginTop="16dp"
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/MontlyExpenseIT"
-        android:text="Set category and amount"
-        android:textSize="18sp"
-        />
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ddbCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Category"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/MonthlyEpensesLimitCatagoriesTV"
-        app:boxCornerRadiusBottomEnd="20dp"
-        app:boxCornerRadiusBottomStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp"
-        app:boxCornerRadiusTopStart="20dp"
-        android:textColorHint="@color/colorDarkGray01">
+        android:layout_below="@id/toolbarRl"
+        android:padding="20dp"
+        >
 
-
-        <AutoCompleteTextView
-            android:id="@+id/categorySetAlert"
+        <TextView
+            android:id="@+id/MonthlyEpensesLimitTV"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:inputType="none"
-            android:layout_height="wrap_content"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/MontlyCategoryExpenseIT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/ddbCategory"
-        app:boxCornerRadiusBottomEnd="20dp"
-        app:boxCornerRadiusBottomStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp"
-        app:boxCornerRadiusTopStart="20dp"
-        android:hint="Enter the amount"
-        android:textColorHint="@color/colorDarkGray01">
-
-        <EditText
-            android:id="@+id/monthyCategoryExpensesLimitET"
+            android:layout_height="wrap_content"
+            android:text="Set Total Expenses Limit"
+            android:textSize="18sp"
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/MontlyExpenseIT"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/MonthlyEpensesLimitTV"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            android:hint="Enter Amount"
+            android:textColorHint="@color/colorDarkGray01">
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <Button
-        android:id="@+id/saveAlertBtn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+            <EditText
+                android:id="@+id/monthyExpensesLimitET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:inputType="numberDecimal"/>
 
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="@color/dark_blue"
-        app:cornerRadius="15dp"
-        android:layout_below="@id/MontlyCategoryExpenseIT"
-        android:outlineSpotShadowColor="@color/DarkGreen"
-        android:shadowColor="@color/DarkGreen"
-        android:text="Save"
-        />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/MonthlyEpensesLimitCatagoriesTV"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/MontlyExpenseIT"
+            android:text="Set Category Expance Limit"
+            android:textSize="18sp"
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ddbCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Category"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/MonthlyEpensesLimitCatagoriesTV"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            android:textColorHint="@color/colorDarkGray01">
+
+
+            <AutoCompleteTextView
+                android:id="@+id/categorySetAlert"
+                android:layout_width="match_parent"
+                android:inputType="none"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/MontlyCategoryExpenseIT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/ddbCategory"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            android:hint="Enter Amount"
+            android:textColorHint="@color/colorDarkGray01">
+
+            <EditText
+                android:id="@+id/monthyCategoryExpensesLimitET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:inputType="numberDecimal"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/saveAlertBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/dark_blue"
+            app:cornerRadius="15dp"
+            android:layout_below="@id/MontlyCategoryExpenseIT"
+            android:outlineSpotShadowColor="@color/DarkGreen"
+            android:shadowColor="@color/DarkGreen"
+            android:text="Save"
+            />
+    </RelativeLayout>
+
 
 </RelativeLayout>
