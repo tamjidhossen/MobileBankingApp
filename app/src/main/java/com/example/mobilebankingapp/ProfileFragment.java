@@ -1,6 +1,7 @@
 package com.example.mobilebankingapp;
 
 import android.content.Intent;
+import android.content.Intent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
