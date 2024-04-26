@@ -78,7 +78,7 @@ public class HistoryFragment extends Fragment {
                 Log.d(TAG, "transactionArrayList cleared: ");
 
                 for (DataSnapshot monthYearSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot transactionSnapshot : monthYearSnapshot.getChildren()) {
+                    for (DataSnapshot transactionSnapshot : monthYearSnapshot.child("ThisMonthsTransactions").getChildren()) {
                         // Parse each transaction data and add it to the ArrayList
                         ModelTransaction transaction = transactionSnapshot.getValue(ModelTransaction.class);
                         transactionArrayList.add(transaction);
