@@ -69,7 +69,7 @@ public class FinancialHealthActivity extends AppCompatActivity {
         incomeDataSet.setColor(Color.argb(150, 0, 10, 255)); // Set dark blue for income bars
 
         BarDataSet expenseDataSet = new BarDataSet(expenseEntries, "Expense");
-        expenseDataSet.setColor(Color.argb(150, 0, 255, 100)); // Set lighter blue for expense bars
+        expenseDataSet.setColor(Color.argb(150, 0, 100, 255)); // Set lighter blue for expense bars
 
         expenseDataSet.setStackLabels(new String[]{"Expense"}); // Stack expense on top of income
 

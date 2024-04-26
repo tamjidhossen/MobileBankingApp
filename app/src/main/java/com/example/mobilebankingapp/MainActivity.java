@@ -1,5 +1,7 @@
 package com.example.mobilebankingapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,6 +17,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -32,7 +35,23 @@ import com.example.mobilebankingapp.StatisticsFragment;
 
 
 public class MainActivity extends AppCompatActivity {
+    private float totExpense;
+    private float foodExpense;
+    private float rentExpense;
+    private float educationExpense;
+    private float entertainmentExpense;
+    private float transportExpense;
+    private float healthExpense;
+    private float otherExpense=15;
 
+    private float totExpenseLimit;
+    private float foodExpenseLimit;
+    private float rentExpenseLimit;
+    private float educationExpenseLimit;
+    private float entertainmentExpenseLimit;
+    private float transportExpenseLimit;
+    private float healthExpenseLimit;
+    private float otherExpenseLimit=10;
     private ActivityMainBinding binding;
 
     //Firebase Auth for auth related tasks
@@ -40,6 +59,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super. onCreate(savedInstanceState);
+
+        //calling notification
+        if(totExpense>totExpenseLimit){
+            makeNotification("Total expense");
+        }
+        if(foodExpense>foodExpenseLimit){
+            makeNotification("Food");
+        }
+        if(rentExpense>rentExpenseLimit){
+            makeNotification("rent");
+        }
+        if(educationExpense>educationExpenseLimit){
+            makeNotification("education");
+        }
+        if(entertainmentExpense>entertainmentExpenseLimit){
+            makeNotification("entertainment");
+        }
+        if(healthExpense>healthExpenseLimit){
+            makeNotification("health care");
+        }
+        if(otherExpense>otherExpenseLimit){
+            makeNotification("others category");
+        }
+
 
         //activity_main.xml = ActivityMainBinding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -64,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 transactionBtn.setImageDrawable(drawable);
             }
             //...................
-
             showHomeFragment();
 
             //handle bottomNv item clicks to navigate between fragments
@@ -107,6 +149,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // NotificationManager
+    private void makeNotification(String category) {
+        String channelId = "CHANNEL_ID_NOTIFICATION";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("Alert")
+                .setContentText("Expense limit exceed")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText("You are exceeding your budget for "+ category))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        // NotificationManager
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+        // Check if the version is Android Oreo or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence channelName = "Notification Channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+            // Register the channel with the system
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Show the notification
+        notificationManager.notify(generateNotificationId(), builder.build());
+    }
+    private int generateNotificationId() {
+        // Use current system time as notification ID
+        return (int) System.currentTimeMillis();
+    }
     private void showHomeFragment() {
         //change toolbar textView text/title to Home
 //        binding. toolbarTitleTv.setText ("Home");

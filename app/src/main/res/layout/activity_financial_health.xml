@@ -26,10 +26,56 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/expenseCard"
         android:layout_below="@id/layoutBarChart"
+        android:background="@drawable/background_rounded"
         >
 
+        <TextView
+            android:id="@+id/IncomeLastThreeMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Expenses"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:padding="10dp"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/totLastThreeMonthExpenseId"
+            android:text="00000.0"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:padding="10dp"/>
+        <TextView
+            android:id="@+id/ExpenseLastThreeMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Expenses"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:padding="10dp"
+            android:layout_below="@id/IncomeLastThreeMonth"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="15dp"
+            android:layout_below="@id/IncomeLastThreeMonth"
+            android:layout_height="wrap_content"
+            android:id="@+id/totLastThreeMonthIncomeId"
+            android:text="00000.0"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:padding="10dp"/>
     </RelativeLayout>
+
 
 </RelativeLayout>
