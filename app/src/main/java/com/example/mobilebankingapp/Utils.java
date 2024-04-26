@@ -21,7 +21,7 @@ public class Utils {
             "Transportation",
             "Entertainment",
             "Healthcare",
-            "Travel",
+            "Educations",
             "Food",
             "Rent",
             "Others"
@@ -33,7 +33,7 @@ public class Utils {
 
     /**
      @param timestamp the timestamp of type Long that we need to format to dd/MM/yyyy
-     @return timestamp formatted to date dd/MM/yyyy*/
+     @return timestamp formatted to date dd/mm/yyyy*/
     public static String formatTimestampDate(Long timestamp){
         if (timestamp == null) {
             return "00/00/00"; // or some default value

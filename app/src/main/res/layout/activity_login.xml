@@ -91,12 +91,34 @@
                     style="@style/TextAppearance.MaterialComponents.Subtitle1"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/emailTil"
+                    android:id="@+id/accNumTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
                     android:layout_marginTop="30dp"
                     android:layout_below="@+id/loginLabelTv"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    android:hint="Account Number"
+                    android:textColorHint="@color/colorDarkGray01">
+
+                    <EditText
+                        android:id="@+id/accNumEt"
+                        android:layout_width="match_parent"
+                        android:inputType="numberDecimal"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailTil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/accNumTil"
                     app:boxCornerRadiusBottomEnd="8dp"
                     app:boxCornerRadiusBottomStart="8dp"
                     app:boxCornerRadiusTopEnd="8dp"

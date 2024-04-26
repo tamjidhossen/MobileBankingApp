@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="9876543210"
+                android:text=""
                 android:letterSpacing=".3"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"/>
@@ -97,7 +97,7 @@
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:text="1280.28"/>
+                android:text=""/>
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
@@ -192,13 +192,15 @@
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
-                android:hint="Name/ Title"
+                android:hint="Title/ Messege"
                 android:textColorHint="@color/colorDarkGray01">
 
                 <EditText
                     android:id="@+id/recipientNameEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
