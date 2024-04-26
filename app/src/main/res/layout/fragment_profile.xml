@@ -148,7 +148,7 @@
             />
 
         <Button
-            android:id="@+id/logout_button"
+            android:id="@+id/logoutBtn"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
