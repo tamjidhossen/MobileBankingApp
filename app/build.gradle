@@ -45,6 +45,8 @@ dependencies {
     implementation libs.firebase.database
     implementation libs.firebase.firestore
     implementation libs.firebase.crashlytics
+    implementation libs.glide
+    implementation libs.firebase.storage
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 

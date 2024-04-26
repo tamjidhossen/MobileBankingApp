@@ -1,19 +1,31 @@
 package com.example.mobilebankingapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.example.mobilebankingapp.databinding.FragmentProfileBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 
 public class ProfileFragment extends Fragment {
@@ -21,6 +33,11 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private FirebaseAuth firebaseAuth;
     private Context mContext;
+    private static final String TAG = "PROFILE_TAG";
+    private ProgressDialog progressDialog;
+
+
+    public String userName = "", email = "", phone = "";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -42,12 +59,116 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadProfileInfo();
+
         firebaseAuth = FirebaseAuth.getInstance();
+        binding.editProfileCv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, ProfileEditActivity.class));
+            }
+        });
 
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logoutPopup();
+            }
+        });
+    }
+
+    private void loadProfileInfo() {
+
+        String userId = getAccountNumberFromSharedPreferences();
+
+        Log.d(TAG, "userId FromSharedPreferences: " + userId);
+
+        loadDataFromSharedPreferences();
+
+        loadImage();
+
+        if(Objects.equals(userName, "") || Objects.equals(email, "") || Objects.equals(phone, "")) {
+            // Get card data from Firebase
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("Profile");
+
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Retrieve data from the database
+                        userName = dataSnapshot.child("name").getValue(String.class);
+                        email = dataSnapshot.child("email").getValue(String.class);
+                        phone = dataSnapshot.child("phoneNumber").getValue(String.class);
+                        String profileImageUrl = ""+ dataSnapshot.child("profileImageUrl").getValue();
+
+                        // Set the retrieved data to the UI elements
+                        binding.nameTv.setText(userName);
+                        binding.phoneTv.setText(phone);
+                        binding.emailTv.setText(email);
+
+                        saveDataToSharedPreferences(userName, phone);
+
+                        try {
+                            // set profile image to profileIV
+                            Glide.with(mContext)
+                                    .load(profileImageUrl)
+                                    .placeholder(R.drawable.ic_person_white)
+                                    .into(binding.profileIv);
+                        } catch (Exception e) {
+                            Log.e(TAG, "onDataChange", e);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle any errors
+
+                }
+            });
+        } else {
+            Log.d(TAG, "taking values from shared preference");
+            // Set the retrieved data to the UI elements
+            binding.nameTv.setText(userName);
+            binding.phoneTv.setText(phone);
+            binding.emailTv.setText(email);
+
+        }
+    }
+
+    private void loadImage() {
+        String userId = getAccountNumberFromSharedPreferences();
+
+        Log.d(TAG, "userId FromSharedPreferences: " + userId);
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("Profile");
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    String profileImageUrl = ""+ dataSnapshot.child("profileImageUrl").getValue();
+
+                    try {
+                        // set profile image to profileIV
+                        Glide.with(mContext)
+                                .load(profileImageUrl)
+                                .placeholder(R.drawable.ic_person_white)
+                                .into(binding.profileIv);
+                    } catch (Exception e) {
+                        Log.e(TAG, "onDataChange", e);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle any errors
+
             }
         });
     }
@@ -77,4 +198,35 @@ public class ProfileFragment extends Fragment {
         startActivity(new Intent(mContext, LoginActivity.class));
         getActivity().finish(); // Finish the current activity after starting the LoginActivity
     }
+
+
+    private void saveDataToSharedPreferences(String name, String phone) {
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("phone", phone);
+        editor.putString("name", name);
+        editor.apply();
+    }
+
+    private void loadDataFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        userName = sharedPreferences.getString("name", "");
+        phone = sharedPreferences.getString("phone", "");
+        email = sharedPreferences.getString("email", "");
+//        imageUrl = sharedPreferences.getString("imageUrl", "");
+
+        Log.d(TAG, "user name FromSharedPreferences: " + userName);
+        Log.d(TAG, "user balance FromSharedPreferences: " + phone);
+        Log.d(TAG, "validity FromSharedPreferences: " + email);
+//        Log.d(TAG, "url FromSharedPreferences: " + imageUrl);
+        // Use the retrieved data as needed
+    }
+
+    private String getAccountNumberFromSharedPreferences() {
+        // Use getActivity() to get the activity associated with the fragment
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(RegisterActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(RegisterActivity.ACCOUNT_NUMBER_KEY, "");
+    }
+
 }

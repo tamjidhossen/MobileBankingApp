@@ -190,6 +190,9 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("name", "");
         editor.putString("cardValidity", "");
         editor.putString("balance", "");
+        editor.putString("phone", "");
+        editor.putString("imageUrl", "");
+
         editor.apply();
     }
 

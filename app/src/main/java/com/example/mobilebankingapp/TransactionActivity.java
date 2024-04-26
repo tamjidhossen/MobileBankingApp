@@ -6,6 +6,7 @@ import static com.example.mobilebankingapp.RegisterActivity.SHARED_PREF_NAME;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -223,6 +224,10 @@ public class TransactionActivity extends AppCompatActivity {
                         Log.d(TAG, "Recipient Transaction Details Updated Successfully");
                         deductFromUser();
                         addToRecipient();
+
+                        //start main Activity
+                        startActivity(new Intent(TransactionActivity.this, MainActivity.class));
+                        finishAffinity(); // finishes current and all activities from back stock
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

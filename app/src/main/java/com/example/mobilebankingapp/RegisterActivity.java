@@ -196,7 +196,9 @@ public class RegisterActivity extends AppCompatActivity {
         editor.putString("name", name);
         editor.putString("cardValidity", validity);
         editor.putString("email", email);
+        editor.putString("phone", "");
         editor.putString("balance", "0.0");
+        editor.putString("imageUrl", "");
         editor.apply();
     }
 
