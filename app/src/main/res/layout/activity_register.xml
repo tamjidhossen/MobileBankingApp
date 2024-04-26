@@ -89,31 +89,88 @@
                     android:layout_marginTop="10dp"
                     style="@style/TextAppearance.MaterialComponents.Subtitle1"/>
 
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/accNumberTil"
+                    android:id="@+id/nameTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
                     android:layout_below="@+id/signUpLabelTv"
                     app:boxCornerRadiusBottomEnd="8dp"
                     app:boxCornerRadiusBottomStart="8dp"
                     app:boxCornerRadiusTopEnd="8dp"
+                    android:paddingTop="30dp"
                     app:boxCornerRadiusTopStart="8dp"
-                    android:hint="Account Number">
+                    android:hint="Name">
 
                     <EditText
-                        android:id="@+id/accNumberEt"
+                        android:id="@+id/accHolderNameEt"
                         android:layout_width="match_parent"
-                        android:inputType="numberDecimal"
+                        android:inputType="textPersonName"
                         android:layout_height="wrap_content"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:id="@+id/accNumValidity"
+                    android:layout_below="@id/nameTil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/accNumberTil"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_marginTop="10dp"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
+                        android:hint="Card Number">
+
+                        <EditText
+                            android:id="@+id/accNumberEt"
+                            android:layout_width="match_parent"
+                            android:inputType="numberDecimal"
+                            android:layout_height="wrap_content"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/accValidityTil"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
+                        android:hint="Validity">
+
+                        <EditText
+                            android:id="@+id/accValidityEt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="creditCardExpirationDate"
+                            android:maxLines="1"
+                            android:inputType="text"
+                            android:maxLength="5"
+                            android:singleLine="true" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/emailTil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/accNumberTil"
+                    android:layout_below="@+id/accNumValidity"
                     app:boxCornerRadiusBottomEnd="8dp"
                     app:boxCornerRadiusBottomStart="8dp"
                     app:boxCornerRadiusTopEnd="8dp"
