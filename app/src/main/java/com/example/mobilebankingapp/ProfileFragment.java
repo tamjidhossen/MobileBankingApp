@@ -209,10 +209,6 @@ public class ProfileFragment extends Fragment {
                     }
                 })
                 .show();
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     private void startLoginOptions() {
@@ -257,10 +253,5 @@ public class ProfileFragment extends Fragment {
 
         // Show a toast message indicating that the intent is passed
 //        Toast.makeText(getContext(), "Intent is passed", Toast.LENGTH_SHORT).show();
-    }
-
-    private void startLoginOptions() {
-        startActivity(new Intent(mContext, LoginActivity.class));
-        getActivity().finish(); // Finish the current activity after starting the LoginActivity
     }
 }
