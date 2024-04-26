@@ -2,6 +2,7 @@ package com.example.mobilebankingapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +19,24 @@ import java.util.List;
 public class FinancialHealthActivity extends AppCompatActivity {
 
     private BarChart barChart;
-    private List<MonthData> monthDataList; // Replace with your data source
+    private List<MonthData> monthDataList;
+
+    private TextView incomelastThreeMonth;
+    private TextView expenselastThreeMonth;
+    private TextView briefText;
+    private TextView financialStatus;
+
+    private float incomelastMon_1;
+    private float incomelastMon_2;
+    private float incomelastMon_3;
+
+    private float expenselastMon_1;
+    private float expenselastMon_2;
+    private float expenselastMon_3;
+    private float rate;
+    private float totalLastThreeExpense=expenselastMon_1+expenselastMon_2+expenselastMon_3;
+    private float totalLastThreeIncome=incomelastMon_1+incomelastMon_2+incomelastMon_3;
+
 
     public static class MonthData {
         String month;
@@ -36,6 +54,32 @@ public class FinancialHealthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_financial_health);
+        //TextView
+        incomelastThreeMonth = findViewById(R.id.totLastThreeMonthIncomeId);
+        expenselastThreeMonth = findViewById(R.id.totLastThreeMonthExpenseId);
+        briefText = findViewById(R.id.BriefText);
+        financialStatus = findViewById(R.id.financialStatusId);
+
+        // Assuming totalLastThreeExpense and totalLastThreeIncome are Float variables representing expenses and income
+
+        // Convert Float values to strings with two decimal points
+        String formattedExpense = String.format("%.2f", totalLastThreeExpense);
+        String formattedIncome = String.format("%.2f", totalLastThreeIncome);
+
+        // Set the formatted values in TextViews
+        expenselastThreeMonth.setText(formattedExpense);
+        incomelastThreeMonth.setText(formattedIncome);
+
+
+        if(totalLastThreeExpense<totalLastThreeIncome){
+                rate = (totalLastThreeExpense/totalLastThreeIncome)*100;
+                briefText.setText("You spend "+rate+"% of total income.");
+
+        }
+        else{
+            rate=((totalLastThreeExpense-totalLastThreeIncome)/totalLastThreeIncome)*100;
+            briefText.setText("You spend "+rate+"% more than total income.");
+        }
 
         // Find the BarChart view
         barChart = findViewById(R.id.barChart);
