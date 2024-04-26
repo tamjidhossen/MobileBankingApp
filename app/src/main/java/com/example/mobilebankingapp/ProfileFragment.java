@@ -75,8 +75,13 @@ public class ProfileFragment extends Fragment {
 
         binding.alertSetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
+            public int hashCode() {
+                return super.hashCode();
+            }
+
+            @Override
             public void onClick(View v) {
-                openSetAlertActivity
+                openSetAlertActivity();
             }
         });
 
