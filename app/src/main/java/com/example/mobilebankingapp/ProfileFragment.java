@@ -210,6 +210,7 @@ public class ProfileFragment extends Fragment {
                 .show();
     }
 
+
     private void startLoginOptions() {
         startActivity(new Intent(mContext, LoginActivity.class));
         getActivity().finish(); // Finish the current activity after starting the LoginActivity
@@ -251,6 +252,7 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
 
         // Show a toast message indicating that the intent is passed
-//        Toast.makeText(getContext(), "Intent is passed", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Intent is passed", Toast.LENGTH_SHORT).show();
     }
+
 }
