@@ -46,14 +46,7 @@ public class FinancialHealthActivity extends AppCompatActivity {
         monthDataList.add(new MonthData("Feb", 1500f, 1200f));
         monthDataList.add(new MonthData("Mar", 2000f, 1000f));
         monthDataList.add(new MonthData("Jan", 1000f, 1600f));
-        monthDataList.add(new MonthData("Feb", 1500f, 1200f));
-        monthDataList.add(new MonthData("Mar", 2000f, 1000f));
-        monthDataList.add(new MonthData("Jan", 1000f, 1600f));
-        monthDataList.add(new MonthData("Feb", 1500f, 1200f));
-        monthDataList.add(new MonthData("Mar", 2000f, 1000f));
-        monthDataList.add(new MonthData("Jan", 1000f, 1600f));
-        monthDataList.add(new MonthData("Feb", 1500f, 1200f));
-        monthDataList.add(new MonthData("Mar", 2000f, 1000f));
+
         // ... add data for other months
 
         // Set data to the chart
@@ -73,10 +66,11 @@ public class FinancialHealthActivity extends AppCompatActivity {
         }
 
         BarDataSet incomeDataSet = new BarDataSet(incomeEntries, "Income");
-        incomeDataSet.setColor(Color.GREEN); // Set color for income bars
+        incomeDataSet.setColor(Color.argb(150, 0, 10, 255)); // Set dark blue for income bars
 
         BarDataSet expenseDataSet = new BarDataSet(expenseEntries, "Expense");
-        expenseDataSet.setColor(Color.BLUE); // Set color for expense bars
+        expenseDataSet.setColor(Color.argb(150, 0, 255, 100)); // Set lighter blue for expense bars
+
         expenseDataSet.setStackLabels(new String[]{"Expense"}); // Stack expense on top of income
 
         BarData barData = new BarData(incomeDataSet, expenseDataSet);
@@ -88,7 +82,15 @@ public class FinancialHealthActivity extends AppCompatActivity {
         barChart.getLegend().setEnabled(true); // Enable chart legend
         barChart.getDescription().setEnabled(false); // Hide chart description
         barChart.setPinchZoom(false); // Disable pinch zoom
-        barChart.animateY(1000); // Add animation (optional)
+        barChart.getXAxis().setDrawGridLines(false); // Remove vertical grid lines
+        barChart.getAxisLeft().setDrawGridLines(false); // Remove horizontal grid lines
+        barChart.getXAxis().setDrawLabels(false); // Remove labels from the X-axis
+        barChart.getAxisLeft().setDrawLabels(false); // Remove labels from the Y-axis
+        barChart.getDescription().setEnabled(false); // Hide chart description
+        barChart.setPinchZoom(false); // Disable pinch zoom
+        barChart.animateY(500); // Add animation
+        barChart.setMinimumHeight((int) 100f);// (optional)
+        barChart.setDrawValueAboveBar(false);
         barChart.invalidate(); // Refresh chart
     }
 }

@@ -19,7 +19,7 @@
             android:name=".SetAlertActivity"
             android:exported="false" />
         <activity
-            android:name=".SpeendingActivity"
+            android:name=".SpendingActivity"
             android:exported="false" />
         <activity
             android:name=".FinancialHealthActivity"

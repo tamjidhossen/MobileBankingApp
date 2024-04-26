@@ -28,6 +28,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.mobilebankingapp.StatisticsFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
