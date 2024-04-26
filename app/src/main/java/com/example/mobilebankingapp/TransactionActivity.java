@@ -6,6 +6,7 @@ import static com.example.mobilebankingapp.RegisterActivity.SHARED_PREF_NAME;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -27,6 +29,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -179,6 +183,7 @@ public class TransactionActivity extends AppCompatActivity {
                 .child(userId)
                 .child("Transactions")
                 .child(monthYear)
+                .child("ThisMonthsTransactions")
                 .child(transactionId); // Use transaction ID as child node
 
         ref.setValue(hashMapUser)
@@ -186,6 +191,11 @@ public class TransactionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "Transaction onSuccess");
+
+
+                        //increase this months total expense (Transaction->monthYear->"totalExpensForMonthYear")
+                        changeExpense();
+
                         // Show transaction successful message
                         addTransactionDetailsToRecipientsAccount();
                         Utils.toast(TransactionActivity.this, "Transaction Successful");
@@ -202,11 +212,90 @@ public class TransactionActivity extends AppCompatActivity {
                 });
     }
 
+    private void changeExpense() {
+        Log.d(TAG, "changeExpense........................");
+
+        // Retrieve account number from SharedPreferences
+        String userId = getAccountNumberFromSharedPreferences();
+        Log.d(TAG, "UserId from shared preference: " + userId);
+
+        // Get current timestamp
+        Long timestamp = Utils.getTimestamp();
+
+        // Format timestamp to month/year
+        String monthYear = formatTimestampToMonthYear(timestamp);
+
+        // Database reference to the total expense for the current month/year
+        DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(userId)
+                .child("Transactions")
+                .child(monthYear)
+                .child("OtherData");
+
+        String totalExpenseKey = "totalExpenseFor" + monthYear;
+        DatabaseReference totalExpenseRef = monthYearRef.child(totalExpenseKey);
+
+        // Run transaction to update the total expense
+        totalExpenseRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                // Retrieve current total expense or initialize if it doesn't exist
+                Object value = mutableData.getValue();
+                double currentTotalExpense;
+
+                if (value instanceof Double) {
+                    currentTotalExpense = (Double) value;
+                } else if (value instanceof String) {
+                    try {
+                        currentTotalExpense = Double.parseDouble((String) value);
+                    } catch (NumberFormatException e) {
+                        Log.e(TAG, "Failed to parse total expense value", e);
+                        return Transaction.abort();
+                    }
+                } else {
+                    currentTotalExpense = 0.0; // Default value if unexpected type or null
+                }
+
+
+                // Increment the total expense by the transaction amount
+                double transactionAmount;
+                try {
+                    transactionAmount = Double.parseDouble(trnAmount);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Failed to parse transaction amount", e);
+                    return Transaction.abort(); // Abort the transaction if parsing fails
+                }
+                currentTotalExpense += transactionAmount;
+
+                // Set the updated total expense back to the database
+                mutableData.setValue(currentTotalExpense);
+
+                // Return the updated data
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
+                if (committed) {
+                    Log.d(TAG, "Transaction total expense update successful");
+                } else {
+                    Log.d(TAG, "Transaction total expense update failed", databaseError != null ? databaseError.toException() : null);
+                }
+            }
+        });
+
+
+    }
+
+
+
     private void addTransactionDetailsToRecipientsAccount() {
         DatabaseReference recipientRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(trnNumber) // Using the recipient's account number as the reference
                 .child("Transactions")
                 .child(formatTimestampToMonthYear(Utils.getTimestamp())) // Month/year node
+                .child("ThisMonthsTransactions")
                 .child(FirebaseDatabase.getInstance().getReference().push().getKey()); // Unique transaction ID
 
         HashMap<String, Object> hashMapRecipient = new HashMap<>();
@@ -221,8 +310,13 @@ public class TransactionActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d(TAG, "Recipient Transaction Details Updated Successfully");
+                        increaseIncome();
                         deductFromUser();
                         addToRecipient();
+
+                        //start main Activity
+                        startActivity(new Intent(TransactionActivity.this, MainActivity.class));
+                        finishAffinity(); // finishes current and all activities from back stock
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -232,6 +326,79 @@ public class TransactionActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void increaseIncome() {
+
+        Log.d(TAG, "increaseIncome........................");
+
+        // Get current timestamp
+        Long timestamp = Utils.getTimestamp();
+
+        // Format timestamp to month/year
+        String monthYear = formatTimestampToMonthYear(timestamp);
+
+        // Database reference to the total income for the current month/year
+        DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(trnNumber) // Update the reference to the recipient's account number
+                .child("Transactions")
+                .child(monthYear)
+                .child("OtherData");
+
+        String totalIncomeKey = "totalIncomeFor" + monthYear;
+        DatabaseReference totalIncomeRef = monthYearRef.child(totalIncomeKey);
+
+        // Run transaction to update the total income
+        totalIncomeRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                // Retrieve current total income or initialize if it doesn't exist
+                Object value = mutableData.getValue();
+                double currentTotalIncome;
+
+                if (value instanceof Double) {
+                    currentTotalIncome = (Double) value;
+                } else if (value instanceof String) {
+                    try {
+                        currentTotalIncome = Double.parseDouble((String) value);
+                    } catch (NumberFormatException e) {
+                        Log.e(TAG, "Failed to parse total income value", e);
+                        return Transaction.abort();
+                    }
+                } else {
+                    currentTotalIncome = 0.0; // Default value if unexpected type or null
+                }
+
+                // Increment the total income by the transaction amount
+                double transactionAmount;
+                try {
+                    transactionAmount = Double.parseDouble(trnAmount);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Failed to parse transaction amount", e);
+                    return Transaction.abort(); // Abort the transaction if parsing fails
+                }
+                currentTotalIncome += transactionAmount;
+
+                // Set the updated total income back to the database
+                mutableData.setValue(currentTotalIncome);
+
+                // Return the updated data
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
+                if (committed) {
+                    Log.d(TAG, "Transaction total income update successful");
+                } else {
+                    Log.d(TAG, "Transaction total income update failed", databaseError != null ? databaseError.toException() : null);
+                }
+            }
+        });
+    }
+
+
+
+
     private void deductFromUser() {
         double newBalance = Double.parseDouble(balance) - Double.parseDouble(trnAmount);
         balance = String.valueOf(newBalance);

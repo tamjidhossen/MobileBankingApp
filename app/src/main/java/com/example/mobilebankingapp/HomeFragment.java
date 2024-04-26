@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.text.DecimalFormat;
 
 public class HomeFragment extends Fragment {
 
@@ -44,7 +45,7 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<ModelTransaction> transactionArrayList;
 
-    private AdapterTransaction adapterTransaction;
+    private AdapterTransactionForHome adapterTransactionForHome;
 
     public String userName = "", balance = "", validity = "";
 
@@ -68,8 +69,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadBalance();
+
 
         loadLatestTransactions();
+
 
 
         String userId = getAccountNumberFromSharedPreferences();
@@ -78,7 +82,6 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "userId FromSharedPreferences: " + userId);
 
         loadDataFromSharedPreferences();
-
 
         if(Objects.equals(userName, "") || Objects.equals(balance, "") || Objects.equals(validity, "")) {
             // Get card data from Firebase
@@ -94,12 +97,18 @@ public class HomeFragment extends Fragment {
                         String balance = dataSnapshot.child("balance").getValue(String.class);
                         String validity = dataSnapshot.child("cardValidity").getValue(String.class);
 
+                        double balanceValue = Double.parseDouble(balance);
+
+                        // Create a DecimalFormat object to format the number to two decimal places
+                        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                        String formattedBalance = decimalFormat.format(balanceValue);
+
                         // Set the retrieved data to the UI elements
                         binding.name.setText(name);
-                        binding.availBalance.setText(balance);
+                        binding.availBalance.setText(formattedBalance);
                         binding.validThruTv.setText(validity);
 
-                        saveDataToSharedPreferences(name, validity, balance);
+                        saveDataToSharedPreferences(name, validity, formattedBalance, 1);
                     }
                 }
 
@@ -115,8 +124,49 @@ public class HomeFragment extends Fragment {
             binding.name.setText(userName);
             binding.availBalance.setText(balance);
             binding.validThruTv.setText(validity);
+
+
         }
 
+    }
+
+    private void loadBalance() {
+        String userId = getAccountNumberFromSharedPreferences();
+
+        Log.d(TAG, "userId FromSharedPreferences: " + userId);
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userId).child("Profile");
+
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Retrieve data from the database
+
+                        String balance = dataSnapshot.child("balance").getValue(String.class);
+
+                        double balanceValue = Double.parseDouble(balance);
+
+                        // Create a DecimalFormat object to format the number to two decimal places
+                        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                        String formattedBalance = decimalFormat.format(balanceValue);
+
+                        // Set the retrieved data to the UI elements
+                        binding.availBalance.setText(formattedBalance);
+
+                        saveDataToSharedPreferences("", "", formattedBalance, 2);
+
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle any errors
+
+                }
+            });
     }
 
     private void loadLatestTransactions() {
@@ -139,7 +189,7 @@ public class HomeFragment extends Fragment {
                 Log.d(TAG, "transactionArrayList cleared: ");
 
                 for (DataSnapshot monthYearSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot transactionSnapshot : monthYearSnapshot.getChildren()) {
+                    for (DataSnapshot transactionSnapshot : monthYearSnapshot.child("ThisMonthsTransactions").getChildren()) {
                         // Parse each transaction data and add it to the ArrayList
                         ModelTransaction transaction = transactionSnapshot.getValue(ModelTransaction.class);
                         transactionArrayList.add(transaction);
@@ -148,8 +198,8 @@ public class HomeFragment extends Fragment {
 
                 Log.d(TAG, "data added to transactionArrayList " + transactionArrayList.size());
 
-                adapterTransaction = new AdapterTransaction(mContext, transactionArrayList, true);
-                binding.adsRvHome.setAdapter(adapterTransaction);
+                adapterTransactionForHome = new AdapterTransactionForHome(mContext, transactionArrayList, true);
+                binding.adsRvHome.setAdapter(adapterTransactionForHome);
 
             }
 
@@ -161,18 +211,29 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void saveDataToSharedPreferences(String name, String cardValidity, String balance) {
+    private void saveDataToSharedPreferences(String name, String cardValidity, String balance, int x) {
+        if (getActivity() == null) {
+            return; // Fragment not attached to activity, avoid accessing SharedPreferences
+        }
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name", name);
-        editor.putString("cardValidity", cardValidity);
-        editor.putString("balance", balance);
+        if (x == 1) {
+            editor.putString("name", name);
+            editor.putString("cardValidity", cardValidity);
+            editor.putString("balance", balance);
+        } else if (x == 2) {
+            editor.putString("balance", balance);
+        }
         editor.apply();
     }
 
     private void loadDataFromSharedPreferences() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        if (getActivity() == null) {
+            return; // Fragment not attached to activity, avoid accessing SharedPreferences
+        }
+
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         userName = sharedPreferences.getString("name", "");
         validity = sharedPreferences.getString("cardValidity", "");
         balance = sharedPreferences.getString("balance", "");
