@@ -14,10 +14,13 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +37,7 @@ import android.widget.TextView;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class StatisticsFragment extends Fragment {
+public class StatisticsFragment extends Fragment implements OnChartValueSelectedListener {
     private TextView expenseRateTV;
     private TextView incomeRateTV;
     private TextView totalExpenseTV;
@@ -56,6 +59,8 @@ public class StatisticsFragment extends Fragment {
 
     private static final String TAG = "STAT_TAG";
 
+    private PieChart pieChart;
+
     private DatabaseReference expensesRef; // Reference to expenses data in Firebase
     public StatisticsFragment() {
         // Required empty public constructor
@@ -67,7 +72,10 @@ public class StatisticsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
+        pieChart = rootView.findViewById(R.id.pieChart);
 
+        // Set the listener for the PieChart
+        pieChart.setOnChartValueSelectedListener(this);
 
         loadDataFromDB();
 
@@ -105,6 +113,37 @@ public class StatisticsFragment extends Fragment {
 
 
         return rootView;
+    }
+
+
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        // Display the name of the selected slice
+        if (e instanceof PieEntry) {
+            PieEntry pieEntry = (PieEntry) e;
+            showSliceName(pieEntry.getLabel());
+        }
+    }
+
+    @Override
+    public void onNothingSelected() {
+        // Hide the slice name when nothing is selected
+        hideSliceName();
+    }
+
+    private void showSliceName(String name) {
+        // Display the slice name using a TextView or any other UI element
+        // For example:
+        TextView sliceNameTextView = getView().findViewById(R.id.sliceNameTextView);
+        sliceNameTextView.setText(name);
+        sliceNameTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSliceName() {
+        // Hide the slice name TextView
+        TextView sliceNameTextView = getView().findViewById(R.id.sliceNameTextView);
+        sliceNameTextView.setVisibility(View.GONE);
     }
 
     private void loadDataFromDB() {
