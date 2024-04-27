@@ -1,7 +1,9 @@
 package com.example.mobilebankingapp;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +14,21 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FinancialHealthActivity extends AppCompatActivity {
 
@@ -36,8 +50,9 @@ public class FinancialHealthActivity extends AppCompatActivity {
     private float expenselastMon_3=8000;
     private float expenselastMon_4=7000;
     private float rate;
-    private float totalLastThreeExpense=expenselastMon_1+expenselastMon_2+expenselastMon_3;
-    private float totalLastThreeIncome=incomelastMon_1+incomelastMon_2+incomelastMon_3;
+    private float totalLastThreeExpense;
+    private float totalLastThreeIncome;
+    private static final String TAG = "FINANCIAL_ACT_TAG";
 
 
     public static class MonthData {
@@ -56,9 +71,20 @@ public class FinancialHealthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_financial_health);
+
+
+        // Initialize monthDataList
+        monthDataList = new ArrayList<>();
+
+
+        loadDataFromDB();
+
+        totalLastThreeExpense=expenselastMon_1+expenselastMon_2+expenselastMon_3;
+        totalLastThreeIncome=incomelastMon_1+incomelastMon_2+incomelastMon_3;
+
         //TextView
-        incomelastThreeMonth = findViewById(R.id.totLastThreeMonthIncomeId);
-        expenselastThreeMonth = findViewById(R.id.totLastThreeMonthExpenseId);
+//        incomelastThreeMonth = findViewById(R.id.totLastThreeMonthIncomeId);
+//        expenselastThreeMonth = findViewById(R.id.totLastThreeMonthExpenseId);
         briefText = findViewById(R.id.BriefText);
         financialStatus = findViewById(R.id.financialStatusId);
 
@@ -69,8 +95,8 @@ public class FinancialHealthActivity extends AppCompatActivity {
         String formattedIncome = String.format("%.2f", totalLastThreeIncome);
 
         // Set the formatted values in TextViews
-        expenselastThreeMonth.setText(formattedExpense);
-        incomelastThreeMonth.setText(formattedIncome);
+//        expenselastThreeMonth.setText(formattedExpense);
+//        incomelastThreeMonth.setText(formattedIncome);
 
 
         if(totalLastThreeExpense<totalLastThreeIncome){
@@ -113,20 +139,7 @@ public class FinancialHealthActivity extends AppCompatActivity {
 
         }
 
-        // Find the BarChart view
-        barChart = findViewById(R.id.barChart);
 
-        // Sample data (replace with your actual data)
-        monthDataList = new ArrayList<>();
-        monthDataList.add(new MonthData("Jan", incomelastMon_1, expenselastMon_1));
-        monthDataList.add(new MonthData("Feb", incomelastMon_2, expenselastMon_2));
-        monthDataList.add(new MonthData("Mar", incomelastMon_3, expenselastMon_3));
-        monthDataList.add(new MonthData("Jan", incomelastMon_4, expenselastMon_4));
-
-        // ... add data for other months
-
-        // Set data to the chart
-        setData(monthDataList);
     }
 
     private void setData(List<MonthData> monthDataList) {
@@ -165,10 +178,124 @@ public class FinancialHealthActivity extends AppCompatActivity {
         barChart.getXAxis().setDrawLabels(true); // Remove labels from the X-axis
         barChart.getAxisLeft().setDrawLabels(false); // Remove labels from the Y-axis
         barChart.getDescription().setEnabled(false); // Hide chart description
+        // Set padding for the chart view (left, top, right, bottom)
+        barChart.setPadding(barChart.getPaddingLeft(), barChart.getPaddingTop(), barChart.getPaddingRight(), 50); // Adjust bottom padding
+
+        barChart.setExtraBottomOffset(20f); // Add extra bottom offset (in pixels)
         barChart.setPinchZoom(false); // Disable pinch zoom
         barChart.animateY(500); // Add animation
         barChart.setMinimumHeight((int) 100f);// (optional)
         barChart.setDrawValueAboveBar(false);
         barChart.invalidate(); // Refresh chart
     }
+
+    private void loadDataFromDB() {
+        // Load data for the current month
+        loadMonthData(0); // 0 represents the current month
+
+        // Load data for the previous 4 months
+        for (int i = 1; i <= 3; i++) {
+            loadMonthData(-i); // Load data for the i-th previous month (e.g., -1 for last month, -2 for two months ago, etc.)
+        }
+    }
+
+    private void loadMonthData(final int monthOffset) {
+        String monthYear = formatTimestampToMonthYear(Utils.getTimestamp(), monthOffset); // Calculate month/year based on offset
+
+        // Construct the database reference for the specified month/year
+        DatabaseReference monthRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(getAccountNumberFromSharedPreferences())
+                .child("Transactions")
+                .child(monthYear)
+                .child("OtherData");
+
+        // Fetch data for the specified month/year
+        monthRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Retrieve total expense and income for the specified month/year
+                    Float totalExpense = dataSnapshot.child("totalExpenseFor" + monthYear).getValue(Float.class);
+                    Float totalIncome = dataSnapshot.child("totalIncomeFor" + monthYear).getValue(Float.class);
+
+                    // Handle null values by providing default values if necessary
+                    float expenseValue = (totalExpense != null) ? totalExpense : 0f;
+                    float incomeValue = (totalIncome != null) ? totalIncome : 0f;
+
+                    // Log the retrieved values for debugging
+                    Log.d(TAG, "Month: " + monthYear + ", Total Expense: " + expenseValue + ", Total Income: " + incomeValue);
+
+                    // Update UI or process the retrieved data as needed
+                    // Example: Store the data in a list or update a chart with the fetched values
+                    processMonthData(monthYear, expenseValue, incomeValue);
+                } else {
+                    Log.d(TAG, "No data found for month: " + monthYear);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read data for month: " + monthYear, databaseError.toException());
+                // Handle onCancelled event, such as displaying an error message to the user
+                // or retrying the database operation
+            }
+        });
+    }
+
+    private void processMonthData(String monthYear, float expense, float income) {
+
+        // Find the BarChart view
+        barChart = findViewById(R.id.barChart);
+        // Process the retrieved data (e.g., store in a list, update a chart)
+        // Example: Store the data in a list of MonthData objects
+
+        String month = changeToMonth(monthYear);
+
+        Log.d(TAG, "month -> " + month);
+
+        MonthData monthData = new MonthData(month, income, expense);
+        monthDataList.add(monthData);
+
+        // If all necessary data has been loaded (e.g., for the last month in the loop), update the UI
+        if (monthDataList.size() == 3) { // 5 months including the current month
+            // Update the UI with the loaded data (e.g., display in a chart)
+//            updateUI();
+            setData(monthDataList);
+        }
+
+    }
+
+    private String changeToMonth(String monthYear) {
+        try {
+            // Parse the input month-year string (e.g., "MMyy")
+            SimpleDateFormat inputFormat = new SimpleDateFormat("MMyy", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+
+            // Parse the input string to a Date object
+            Date date = inputFormat.parse(monthYear);
+
+            // Format the Date object to a month abbreviation string (e.g., "MMM")
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ""; // Return empty string or handle the error accordingly
+        }
+    }
+
+
+    private String formatTimestampToMonthYear(long timestamp, int monthOffset) {
+        // Calculate the month and year based on the provided offset (0 for current month, -1 for last month, -2 for two months ago, etc.)
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
+        calendar.add(Calendar.MONTH, monthOffset); // Adjust month by the specified offset
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMyy", Locale.getDefault());
+        return dateFormat.format(calendar.getTime());
+    }
+
+
+    private String getAccountNumberFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(RegisterActivity.SHARED_PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(RegisterActivity.ACCOUNT_NUMBER_KEY, "");
+    }
+
 }

@@ -137,13 +137,13 @@ public class SpendingActivity extends AppCompatActivity {
                     Float transportExpense = dataSnapshot.child("TransportationCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
                     Float entertainmentExpense = dataSnapshot.child("EntertainmentCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
                     Float healthcareExpense = dataSnapshot.child("HealthcareCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
-                    Float educationExpense = dataSnapshot.child("EducationCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
-                    Float otherExpense = dataSnapshot.child("OtherCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
-                    if (foodExpense != null) {
-                        totFoodExpense = foodExpense;
-                    } else {
-                        totFoodExpense = 0f; // Provide a default value or handle the null case appropriately
-                    }
+                    Float educationExpense = dataSnapshot.child("EducationsCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float otherExpense = dataSnapshot.child("OthersCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+//                    if (foodExpense != null) {
+//                        totFoodExpense = foodExpense;
+//                    } else {
+//                        totFoodExpense = 0f; // Provide a default value or handle the null case appropriately
+//                    }
                     // Handle null values by providing default values if necessary
 //                    totFoodExpense = (foodExpense != null) ? foodExpense : 0f;
                     totRentExpense = (rentExpense != null) ? rentExpense : 0f;
@@ -332,6 +332,7 @@ public class SpendingActivity extends AppCompatActivity {
         BarData barData = new BarData(lastMonthDataSet, currentMonthDataSet);
         barData.setValueTextSize(16f); // Set value text size
 
+        barChart.setScaleEnabled(false);// remove all zooming
         barChart.setData(barData);
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels)); // Empty labels on X-axis
         barChart.getAxisLeft().setAxisMinimum(0f); // Set minimum value for Y-axis
@@ -356,7 +357,6 @@ public class SpendingActivity extends AppCompatActivity {
         barChart.setDrawValueAboveBar(false);
         barChart.invalidate(); // Refresh chart
     }
-
 
 
     // Function to get the name of the current month

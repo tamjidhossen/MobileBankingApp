@@ -6,93 +6,146 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FinancialHealthActivity">
+
     <RelativeLayout
+        android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layoutBarChart"
-        android:background="@drawable/background_rounded"
-        android:backgroundTint="@color/white"
-        android:layout_margin="10dp"
-        >
-        <TextView
-            android:layout_width="match_parent"
+        android:layout_height="@dimen/m_toolbar_height">
+
+        <!--ImageButton: Click to go-back-->
+        <ImageButton
+            android:id="@+id/toolbarBackBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:id="@+id/title1"
-            android:text="financial health Analysis: "
-            android:textSize="20dp"/>
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
-            android:layout_below="@id/title1"
+            android:src="@drawable/ic_back"
+            android:background="@android:color/transparent"
+            android:padding="15dp"
+            android:layout_centerVertical="true" />
+
+        <!--TextView: Toolbar Title-->
+        <TextView
+            android:id="@+id/pageTitleAlertTV"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Financial Health"/>
+
+        <!--View: To make Toolbar look separate from other UI-->
+        <View
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="1dp"
+            android:background="@color/colorGray02"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/expenseCard"
-        android:layout_below="@id/layoutBarChart"
-        android:background="@drawable/background_rounded"
-        android:backgroundTint="@color/light_blue"
+        android:layout_below="@+id/toolbarRl"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="20dp"
+        app:cardUseCompatPadding="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         >
 
-        <TextView
-            android:id="@+id/IncomeLastThreeMonth"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Income of last three month"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:padding="0dp"/>
+            android:id="@+id/layoutBarChart"
+            android:background="@drawable/background_rounded"
+            android:backgroundTint="@color/white"
+            android:layout_below="@id/toolbarRl"
+            android:layout_margin="20dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:id="@+id/title1"
+                android:text="Compare With Previous Months"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/IncomeLastThreeMonth"
-            android:id="@+id/totLastThreeMonthIncomeId"
-            android:text="00000.0"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-          />
-        <TextView
-            android:id="@+id/ExpenseLastThreeMonth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Expense of last three month"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@id/totLastThreeMonthIncomeId"/>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChart"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/title1"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_below="@id/ExpenseLastThreeMonth"
-            android:layout_height="wrap_content"
-            android:id="@+id/totLastThreeMonthExpenseId"
-            android:text="00000.0"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            />
-    </RelativeLayout>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="15dp"-->
+<!--        android:layout_marginRight="15dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:id="@+id/expenseCard"-->
+<!--        android:layout_below="@id/layoutBarChart"-->
+<!--        android:background="@drawable/background_rounded"-->
+<!--        android:backgroundTint="@color/light_blue"-->
+<!--        >-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/IncomeLastThreeMonth"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Income of last three month"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="20sp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:padding="0dp"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:textAlignment="textEnd"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/IncomeLastThreeMonth"-->
+<!--            android:id="@+id/totLastThreeMonthIncomeId"-->
+<!--            android:text="00000.0"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="22sp"-->
+<!--          />-->
+<!--        <TextView-->
+<!--            android:id="@+id/ExpenseLastThreeMonth"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Expense of last three month"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="20sp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_below="@id/totLastThreeMonthIncomeId"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:textAlignment="textEnd"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:layout_below="@id/ExpenseLastThreeMonth"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/totLastThreeMonthExpenseId"-->
+<!--            android:text="00000.0"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="22sp"-->
+<!--            />-->
+<!--    </RelativeLayout>-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/expenseCard"
+        android:layout_below="@id/card"
+        android:padding="20dp"
         android:background="@drawable/background_rounded"
         android:backgroundTint="@color/light_blue"
         >
@@ -101,35 +154,37 @@
             android:id="@+id/BriefText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You spend 22% of your income"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="16dp"
+            android:textStyle="bold"
             android:padding="10dp"/>
 
 
         <TextView
             android:id="@+id/financilaConditonTV"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Financeial health :"
+            android:text="Financial Health Condition: "
 
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
             android:layout_below="@id/BriefText"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textAlignment="textEnd"
             android:layout_marginRight="15dp"
             android:layout_below="@id/BriefText"
+            android:layout_toRightOf="@id/financilaConditonTV"
             android:layout_height="wrap_content"
             android:id="@+id/financialStatusId"
-            android:text="....."
+            android:text=""
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_marginLeft="10dp"/>
     </RelativeLayout>
 

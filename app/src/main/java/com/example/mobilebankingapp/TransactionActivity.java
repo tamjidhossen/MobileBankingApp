@@ -175,8 +175,8 @@ public class TransactionActivity extends AppCompatActivity {
         String transactionId = FirebaseDatabase.getInstance().getReference().push().getKey();
 
         // Format timestamp to month/year
-//        String monthYear = formatTimestampToMonthYear(timestamp);
-        String monthYear = "0324";
+        String monthYear = formatTimestampToMonthYear(timestamp);
+//        String monthYear = "0124";
 
         HashMap<String, Object> hashMapUser = new HashMap<>();
         hashMapUser.put("trnId", transactionId); // Add transaction ID
@@ -230,8 +230,8 @@ public class TransactionActivity extends AppCompatActivity {
             Long timestamp = Utils.getTimestamp();
 
             // Format timestamp to month/year
-//        String monthYear = formatTimestampToMonthYear(timestamp);
-        String monthYear = "0324";
+        String monthYear = formatTimestampToMonthYear(timestamp);
+//        String monthYear = "0124";
 
 
             String categoryCost = trnCategory + "CatTotal" + monthYear;
@@ -305,8 +305,8 @@ public class TransactionActivity extends AppCompatActivity {
         Long timestamp = Utils.getTimestamp();
 
         // Format timestamp to month/year
-//        String monthYear = formatTimestampToMonthYear(timestamp);
-            String monthYear = "0324";
+        String monthYear = formatTimestampToMonthYear(timestamp);
+//            String monthYear = "0124";
         // Database reference to the total expense for the current month/year
         DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(userId)
@@ -376,7 +376,7 @@ public class TransactionActivity extends AppCompatActivity {
         DatabaseReference recipientRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(trnNumber) // Using the recipient's account number as the reference
                 .child("Transactions")
-                .child("0324") //monthYear formatTimestampToMonthYear(Utils.getTimestamp())
+                .child(formatTimestampToMonthYear(Utils.getTimestamp())) //monthYear formatTimestampToMonthYear(Utils.getTimestamp())
                 .child("ThisMonthsTransactions")
                 .child(FirebaseDatabase.getInstance().getReference().push().getKey()); // Unique transaction ID
 
@@ -422,7 +422,7 @@ public class TransactionActivity extends AppCompatActivity {
         DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(trnNumber) // Update the reference to the recipient's account number
                 .child("Transactions")
-                .child("0324") //monthYear
+                .child(monthYear) //monthYear
                 .child("OtherData");
 
         String totalIncomeKey = "totalIncomeFor" + monthYear;

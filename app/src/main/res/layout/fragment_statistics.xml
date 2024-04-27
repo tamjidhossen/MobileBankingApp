@@ -6,15 +6,19 @@
     android:orientation="vertical"
     >
 
+
     <!-- Health Summary -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
-        android:text="STATISTIC"
+        android:text="Statistics"
         android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/Navy"
+        android:textSize="20sp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:textStyle="bold"
-        android:textSize="30dp"
 
         />
     <RelativeLayout
@@ -23,29 +27,34 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:id="@+id/expenseCard"
+        android:padding="10dp"
+        android:backgroundTint="@color/light_blue"
         android:background="@drawable/background_rounded"
         >
 
         <TextView
             android:id="@+id/tot_expenseStatic"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Expenses"
+            android:text="Total Expenses: "
+            android:layout_marginTop="8dp"
             android:textColor="@color/white"
-            android:textSize="25dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:padding="10dp"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:textAlignment="textEnd"
             android:layout_marginRight="15dp"
             android:layout_height="wrap_content"
             android:id="@+id/TotalExpenseId"
-            android:layout_below="@id/tot_expenseStatic"
-            android:text="00000.0"
+            android:layout_toRightOf="@id/tot_expenseStatic"
+            android:text=""
+            android:layout_alignParentEnd="true"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="19dp"
+            android:textSize="30dp"
             android:padding="10dp"/>
 <!--        <TextView-->
 <!--            android:layout_width="match_parent"-->
@@ -64,9 +73,10 @@
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
+        android:padding="10dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
+        android:background="@drawable/background_rounded"
+        android:backgroundTint="@color/light_blue">
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -82,8 +92,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Expenses"
+            android:textStyle="bold"
             android:textSize="20dp"
             android:id="@+id/healthExpense"
+            android:textColor="@color/white"
             android:layout_toRightOf="@id/upArrowImageView"
             android:layout_marginTop="15dp"
 
@@ -92,6 +104,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/expenseRateId"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:text="+25%"
             android:textSize="20dp"
             android:layout_toRightOf="@id/healthExpense"
@@ -109,8 +123,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
+        android:padding="10dp"
+        android:background="@drawable/background_rounded"
+        android:backgroundTint="@color/light_blue">
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -125,6 +140,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Income"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="20dp"
             android:id="@+id/healthIncomeText"
             android:layout_toRightOf="@id/IncomeIcon"
@@ -137,6 +154,8 @@
             android:id="@+id/incomeRateId"
             android:text="+25%"
             android:textSize="20dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:layout_toRightOf="@id/healthIncomeText"
             android:textAlignment="textEnd"
             android:layout_marginRight="15dp"
@@ -149,7 +168,7 @@
         android:id="@+id/btnHealth"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="see more details.."
+        android:text="see more"
         android:textAlignment="textEnd"
         android:textSize="12sp"
         android:layout_marginLeft="160dp"
@@ -159,18 +178,19 @@
         />
     <TextView
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
-        android:text="Expense of categories"
+        android:text="Category Expesne"
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="20dp"
 
         />
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="250dp"
-
+        android:padding="20dp"
         >
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart"
@@ -182,7 +202,7 @@
         android:id="@+id/btnBehaviour"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="see more details.."
+        android:text="see more"
         android:textAlignment="textEnd"
         android:textSize="12sp"
         android:layout_marginLeft="160dp"

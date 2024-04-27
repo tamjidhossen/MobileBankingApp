@@ -129,8 +129,8 @@ public class StatisticsFragment extends Fragment {
                     Float transportExpense = dataSnapshot.child("TransportationCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
                     Float entertainmentExpense = dataSnapshot.child("EntertainmentCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
                     Float healthcareExpense = dataSnapshot.child("HealthcareCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
-                    Float educationExpense = dataSnapshot.child("EducationCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
-                    Float otherExpense = dataSnapshot.child("OtherCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float educationExpense = dataSnapshot.child("EducationsCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float otherExpense = dataSnapshot.child("OthersCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
                     if (foodExpense != null) {
                         totFoodExpense = foodExpense;
                     } else {
@@ -243,7 +243,7 @@ public class StatisticsFragment extends Fragment {
         setupPieChart(pieChart);
 
         // Update total expense TextView
-        totalExpenseTV.setText(String.format("Total Expense: %.2f", totalExpenseVal));
+        totalExpenseTV.setText(String.format("$%.2f", totalExpenseVal));
 
         // Calculate and display rates
         calculateRates();
@@ -295,29 +295,72 @@ public class StatisticsFragment extends Fragment {
         startActivity(intent);
     }
     private void calculateRates() {
-        // Assuming currentMonthExpense, previousMontExpense, currentMonthIncome, and previousMontIncome
-        // are already initialized with appropriate values.
+        // Calculate expense percentage change
+        double expenseChange = currentMonthExpense - previousMontExpense;
+        double percentageExpenseChange;
 
-        // Calculate expense rate change
         if (previousMontExpense != 0) {
-            expenseRate = ((currentMonthExpense - previousMontExpense) / previousMontExpense) * 100;
+            if (expenseChange > 0) {
+                percentageExpenseChange = (expenseChange / previousMontExpense) * 100.0;
+            } else {
+                percentageExpenseChange = (expenseChange / currentMonthExpense) * 100.0;
+            }
         } else {
-            // Handle division by zero scenario
-            expenseRate = 0;
+            percentageExpenseChange = 0; // Handle division by zero scenario
         }
 
-        // Calculate income rate change
+        // Determine the color and sign for expense UI
+        String expenseTrendText;
+        int expenseTrendColor;
+
+        if (expenseChange > 0) {
+            expenseTrendText = String.format("+%.2f%%", Math.abs(percentageExpenseChange));
+            expenseTrendColor = Color.parseColor("#800020"); // Red color
+        } else if (expenseChange < 0) {
+            expenseTrendText = String.format("-%.2f%%", Math.abs(percentageExpenseChange));
+            expenseTrendColor = Color.parseColor("#0d5e59"); // Green
+        } else {
+            expenseTrendText = "0.00%";
+            expenseTrendColor = Color.parseColor("#000000"); // Black color (default)
+        }
+
+        // Calculate income percentage change
+        double incomeChange = currentMonthIncome - previousMontIncome;
+        double percentageIncomeChange;
+
         if (previousMontIncome != 0) {
-            incomeRate = ((currentMonthIncome - previousMontIncome) / previousMontIncome) * 100;
+            if (incomeChange > 0) {
+                percentageIncomeChange = (incomeChange / previousMontIncome) * 100.0;
+            } else {
+                percentageIncomeChange = (incomeChange / currentMonthIncome) * 100.0;
+            }
         } else {
-            // Handle division by zero scenario
-            incomeRate = 0;
+            percentageIncomeChange = 0; // Handle division by zero scenario
         }
 
-        // Display the calculated rates in TextViews
-        expenseRateTV.setText(String.format("%.2f%%", expenseRate));
-        incomeRateTV.setText(String.format("%.2f%%", incomeRate));
+        // Determine the color and sign for income UI
+        String incomeTrendText;
+        int incomeTrendColor;
+
+        if (incomeChange > 0) {
+            incomeTrendText = String.format("+%.2f%%", Math.abs(percentageIncomeChange));
+            incomeTrendColor = Color.parseColor("#0d5e59"); // Green color
+        } else if (incomeChange < 0) {
+            incomeTrendText = String.format("-%.2f%%", Math.abs(percentageIncomeChange));
+            incomeTrendColor = Color.parseColor("#800020"); // Red color
+        } else {
+            incomeTrendText = "0.00%";
+            incomeTrendColor = Color.parseColor("#000000"); // Black color (default)
+        }
+
+        // Display the calculated rates in TextViews for expenses and income
+        expenseRateTV.setText(expenseTrendText);
+//        expenseRateTV.setTextColor(expenseTrendColor);
+
+        incomeRateTV.setText(incomeTrendText);
+//        incomeRateTV.setTextColor(incomeTrendColor);
     }
+
 
 
     private String getAccountNumberFromSharedPreferences() {
