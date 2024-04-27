@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,344 +7,458 @@
     android:layout_height="match_parent"
     tools:context=".SpendingActivity">
 
-    <!-- Spending Analysis Title -->
     <RelativeLayout
-        android:id="@+id/spending_title_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/spending_title_layout"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/m_toolbar_height">
+
+            <!--ImageButton: Click to go-back-->
+            <ImageButton
+                android:id="@+id/toolbarBackBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back"
+                android:background="@android:color/transparent"
+                android:padding="15dp"
+                android:layout_centerVertical="true" />
+
+            <!--TextView: Toolbar Title-->
+            <TextView
+                android:id="@+id/pageTitleAlertTV"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Spending Analysis"/>
+
+            <!--View: To make Toolbar look separate from other UI-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray02"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/allCatCardView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/spending_title_layout"
             android:layout_marginTop="20dp"
-            android:text="Spending Analysis"
-            android:textSize="30dp"
-            android:textAlignment="center" />
-    </RelativeLayout>
+            app:cardCornerRadius="20dp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            >
+            <RelativeLayout
+                android:id="@+id/allCategoryRL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spending_title_layout"
+                android:padding="10dp">
 
-    <!-- Food Category -->
-    <RelativeLayout
-        android:id="@+id/food_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spending_title_layout"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_food"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/expenseInFood"
+
+                <TextView
+                    android:id="@+id/spendingByCatLabelTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spending by Categories"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/thisMonthLabelTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/spendingByCatLabelTv"
+                    android:text="This Month"                    
+                    android:layout_marginLeft="20dp"
+                    android:textSize="15sp"
+                    />
+                <!-- Food Category -->
+                <RelativeLayout
+                    android:id="@+id/food_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/thisMonthLabelTv"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/light_blue"
+                    tools:ignore="NotSibling">
+                    <ImageView
+                        android:id="@+id/icon1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_food"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/expenseInFood"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Foods"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/icon1"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/foodsCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/expenseInFood"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+
+                <!-- Rent Category -->
+                <RelativeLayout
+                    android:id="@+id/rent_category_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/food_category_layout"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/light_blue">
+                    <ImageView
+                        android:id="@+id/icon2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_rent"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/ExpenseInRent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rent"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_toEndOf="@id/icon2"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/rentCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""                        
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/ExpenseInRent"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+
+                <!-- Transportation Category -->
+                <RelativeLayout
+                    android:id="@+id/transportation_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rent_category_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/light_blue">
+                    <ImageView
+                        android:id="@+id/icon3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_transportation"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/expenseInTransport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Transportation"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/icon3"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/transportationCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/expenseInTransport"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+
+                <!-- Entertainment Category -->
+                <RelativeLayout
+                    android:id="@+id/entertainment_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/transportation_category_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/light_blue">
+                    <ImageView
+                        android:id="@+id/icon4"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_entertainment"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/expenseInEntertainment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Entertainment"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_toEndOf="@id/icon4"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/entertainmentCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/expenseInEntertainment"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+
+                <!-- Healthcare Category -->
+                <RelativeLayout
+                    android:id="@+id/healthcare_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/entertainment_category_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/light_blue">
+                    <ImageView
+                        android:id="@+id/icon5"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_healthcare"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/expenseInHealthcare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Healthcare"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_toEndOf="@id/icon5"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/healthcareCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_toEndOf="@id/expenseInHealthcare"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+
+                <!-- Travel Category -->
+                <RelativeLayout
+                    android:id="@+id/travel_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/healthcare_category_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_rect"
+                    android:backgroundTint="@color/light_blue">
+                    <ImageView
+                        android:id="@+id/icon6"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_education"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/expenseInTravel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Education"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_toEndOf="@id/icon6"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/educationCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/expenseInTravel"
+                        android:textAlignment="textEnd"
+                        android:layout_marginRight="15dp"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+
+                <!-- Others Category -->
+                <RelativeLayout
+                    android:id="@+id/others_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/travel_category_layout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_rect"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/light_blue">
+                    <ImageView
+                        android:id="@+id/icon7"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_others"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/expenseInOther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Others"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_toEndOf="@id/icon7"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/otherCategoryValueTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="20dp"
+                        android:layout_toEndOf="@id/expenseInOther"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"/>
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Foods"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon1"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/foodsCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="25"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/expenseInFood"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
+            android:layout_below="@+id/allCatCardView"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
 
-    <!-- Rent Category -->
-    <RelativeLayout
-        android:id="@+id/rent_category_layout"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/food_category_layout"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_rent"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/ExpenseInRent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rent"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon2"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/rentCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="25"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/ExpenseInRent"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
+            >
 
-    <!-- Transportation Category -->
-    <RelativeLayout
-        android:id="@+id/transportation_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rent_category_layout"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_transportation"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/expenseInTransport"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Transportation"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon3"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/transportationCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0.00"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/expenseInTransport"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
+            <!-- Trend Layout Placeholder -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/allCatCardView"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_rect"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/white">
+                <!--        <TextView-->
+                <!--            android:id="@+id/expenseTV"-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:text="Most Expense"/>-->
 
-    <!-- Entertainment Category -->
-    <RelativeLayout
-        android:id="@+id/entertainment_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/transportation_category_layout"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_entertainment"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/expenseInEntertainment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Entertainment"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon4"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/entertainmentCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="25%"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/expenseInEntertainment"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
+                <!--        <TextView-->
+                <!--        android:id="@+id/ExpenseIncOrDec"-->
+                <!--        android:layout_width="match_parent"-->
+                <!--        android:layout_toRightOf="@id/expenseTV"-->
+                <!--        android:layout_height="wrap_content"-->
+                <!--            android:textAlignment="textEnd"-->
+                <!--            android:layout_marginRight="20dp"-->
+                <!--        android:text="Empty"/>-->
+                <TextView
+                    android:id="@+id/trendTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text = "Expense Trend"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/trendResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text = ""
+                    android:textAlignment="textEnd"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:layout_below="@id/trendTitle"
+                    android:id="@+id/barchartCompareTwoExpense"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:padding="50dp"
+                    android:layout_height="150dp"/>
 
-    <!-- Healthcare Category -->
-    <RelativeLayout
-        android:id="@+id/healthcare_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/entertainment_category_layout"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon5"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_healthcare"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/expenseInHealthcare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Healthcare"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon5"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/healthcareCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="00.0"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/expenseInHealthcare"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
-
-    <!-- Travel Category -->
-    <RelativeLayout
-        android:id="@+id/travel_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/healthcare_category_layout"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon6"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_education"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/expenseInTravel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Education"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon6"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/educationCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="000.0"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/expenseInTravel"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
-
-    <!-- Others Category -->
-    <RelativeLayout
-        android:id="@+id/others_category_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/travel_category_layout"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/shape_rect"
-        android:backgroundTint="#DAE6F1">
-        <ImageView
-            android:id="@+id/icon7"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_others"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"/>
-        <TextView
-            android:id="@+id/expenseInOther"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Others"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/icon7"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/otherCategoryValueTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="000.0"
-            android:textSize="20dp"
-            android:layout_toEndOf="@id/expenseInOther"
-            android:textAlignment="textEnd"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"/>
-    </RelativeLayout>
-
-    <!-- Trend Layout Placeholder -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/others_category_layout"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/shape_rect"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#DAE6F1">
-<!--        <TextView-->
-<!--            android:id="@+id/expenseTV"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Most Expense"/>-->
-
-<!--        <TextView-->
-<!--        android:id="@+id/ExpenseIncOrDec"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_toRightOf="@id/expenseTV"-->
-<!--        android:layout_height="wrap_content"-->
-<!--            android:textAlignment="textEnd"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--        android:text="Empty"/>-->
-        <TextView
-            android:id="@+id/trendTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text = "Expense(current month vs previous month)"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"/>
-        <com.github.mikephil.charting.charts.HorizontalBarChart
-            android:layout_below="@id/trendTitle"
-            android:id="@+id/barchartCompareTwoExpense"
-            android:layout_width="match_parent"
-            android:layout_marginRight="20dp"
-            android:layout_height="100dp"/>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
-</RelativeLayout>
+
+
+
+</ScrollView>
