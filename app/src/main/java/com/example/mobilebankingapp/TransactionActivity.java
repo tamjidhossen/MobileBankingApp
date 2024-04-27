@@ -83,6 +83,13 @@ public class TransactionActivity extends AppCompatActivity {
             }
         });
 
+        binding.toolbarBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+
     }
 
 
@@ -168,7 +175,8 @@ public class TransactionActivity extends AppCompatActivity {
         String transactionId = FirebaseDatabase.getInstance().getReference().push().getKey();
 
         // Format timestamp to month/year
-        String monthYear = formatTimestampToMonthYear(timestamp);
+//        String monthYear = formatTimestampToMonthYear(timestamp);
+        String monthYear = "0324";
 
         HashMap<String, Object> hashMapUser = new HashMap<>();
         hashMapUser.put("trnId", transactionId); // Add transaction ID
@@ -182,7 +190,7 @@ public class TransactionActivity extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users")
                 .child(userId)
                 .child("Transactions")
-                .child(monthYear)
+                .child(monthYear) //monthYear
                 .child("ThisMonthsTransactions")
                 .child(transactionId); // Use transaction ID as child node
 
@@ -195,6 +203,8 @@ public class TransactionActivity extends AppCompatActivity {
 
                         //increase this months total expense (Transaction->monthYear->"totalExpensForMonthYear")
                         changeExpense();
+
+                        changeCatExpense();
 
                         // Show transaction successful message
                         addTransactionDetailsToRecipientsAccount();
@@ -212,7 +222,79 @@ public class TransactionActivity extends AppCompatActivity {
                 });
     }
 
-    private void changeExpense() {
+    private void changeCatExpense() {
+            // Retrieve account number from SharedPreferences
+            String userId = getAccountNumberFromSharedPreferences();
+
+            // Get current timestamp
+            Long timestamp = Utils.getTimestamp();
+
+            // Format timestamp to month/year
+//        String monthYear = formatTimestampToMonthYear(timestamp);
+        String monthYear = "0324";
+
+
+            String categoryCost = trnCategory + "CatTotal" + monthYear;
+            // Database reference to the category spending for the current month/year
+            DatabaseReference categoryRef = FirebaseDatabase.getInstance().getReference("Users")
+                    .child(userId)
+                    .child("Transactions")
+                    .child(monthYear) //monthYear
+                    .child("OtherData")
+                    .child(categoryCost);
+
+            // Run transaction to update the category spending
+            categoryRef.runTransaction(new Transaction.Handler() {
+                @NonNull
+                @Override
+                public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                    // Retrieve current category spending or initialize if it doesn't exist
+                    Object value = mutableData.getValue();
+                    double currentCategoryExpense;
+
+                    if (value instanceof Double) {
+                        currentCategoryExpense = (Double) value;
+                    } else if (value instanceof String) {
+                        try {
+                            currentCategoryExpense = Double.parseDouble((String) value);
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, "Failed to parse category expense value", e);
+                            return Transaction.abort();
+                        }
+                    } else {
+                        currentCategoryExpense = 0.0; // Default value if unexpected type or null
+                    }
+
+                    // Increment the category spending by the transaction amount
+                    double transactionAmount;
+                    try {
+                        transactionAmount = Double.parseDouble(trnAmount);
+                    } catch (NumberFormatException e) {
+                        Log.e(TAG, "Failed to parse transaction amount", e);
+                        return Transaction.abort(); // Abort the transaction if parsing fails
+                    }
+                    currentCategoryExpense += transactionAmount;
+
+                    // Set the updated category spending back to the database
+                    mutableData.setValue(currentCategoryExpense);
+
+                    // Return the updated data
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, boolean committed, @Nullable DataSnapshot dataSnapshot) {
+                    if (committed) {
+                        Log.d(TAG, "Transaction category expense update successful");
+                    } else {
+                        Log.d(TAG, "Transaction category expense update failed", databaseError != null ? databaseError.toException() : null);
+                    }
+                }
+            });
+        }
+
+
+        private void changeExpense() {
         Log.d(TAG, "changeExpense........................");
 
         // Retrieve account number from SharedPreferences
@@ -223,13 +305,13 @@ public class TransactionActivity extends AppCompatActivity {
         Long timestamp = Utils.getTimestamp();
 
         // Format timestamp to month/year
-        String monthYear = formatTimestampToMonthYear(timestamp);
-
+//        String monthYear = formatTimestampToMonthYear(timestamp);
+            String monthYear = "0324";
         // Database reference to the total expense for the current month/year
         DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(userId)
                 .child("Transactions")
-                .child(monthYear)
+                .child(monthYear) //monthYear
                 .child("OtherData");
 
         String totalExpenseKey = "totalExpenseFor" + monthYear;
@@ -294,7 +376,7 @@ public class TransactionActivity extends AppCompatActivity {
         DatabaseReference recipientRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(trnNumber) // Using the recipient's account number as the reference
                 .child("Transactions")
-                .child(formatTimestampToMonthYear(Utils.getTimestamp())) // Month/year node
+                .child("0324") //monthYear formatTimestampToMonthYear(Utils.getTimestamp())
                 .child("ThisMonthsTransactions")
                 .child(FirebaseDatabase.getInstance().getReference().push().getKey()); // Unique transaction ID
 
@@ -340,7 +422,7 @@ public class TransactionActivity extends AppCompatActivity {
         DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
                 .child(trnNumber) // Update the reference to the recipient's account number
                 .child("Transactions")
-                .child(monthYear)
+                .child("0324") //monthYear
                 .child("OtherData");
 
         String totalIncomeKey = "totalIncomeFor" + monthYear;

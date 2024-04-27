@@ -1,8 +1,11 @@
 package com.example.mobilebankingapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +19,20 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.widget.Button;
 import android.widget.TextView;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class StatisticsFragment extends Fragment {
     private TextView expenseRateTV;
@@ -28,7 +40,7 @@ public class StatisticsFragment extends Fragment {
     private TextView totalExpenseTV;
     private float totFoodExpense;
     private float totRentExpense;
-    private float totTrnasportExpense;
+    private float totTransportExpense;
     private float totEntertainmentExpense;
     private float totHealthExpense;
     private float totEducationExpense;
@@ -40,18 +52,24 @@ public class StatisticsFragment extends Fragment {
 
     private float incomeRate;
     private float expenseRate;
-    private float totalExpense;
+    private float totalExpenseVal;
+
+    private static final String TAG = "STAT_TAG";
+
+    private DatabaseReference expensesRef; // Reference to expenses data in Firebase
     public StatisticsFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
+
+
+        loadDataFromDB();
 
         // Find the TextView
         Button buttonHealth = rootView.findViewById(R.id.btnHealth);
@@ -84,19 +102,163 @@ public class StatisticsFragment extends Fragment {
                 openFinancialSpendingActivity();
             }
         });
-        PieChart pieChart = rootView.findViewById(R.id.pieChart);
+
+
+        return rootView;
+    }
+
+    private void loadDataFromDB() {
+
+        loadPrevMonthData();
+
+        // Construct the database reference for the current month/year
+        DatabaseReference monthYearRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(getAccountNumberFromSharedPreferences()) // Using the user's account number as the reference
+                .child("Transactions")
+                .child(formatTimestampToMonthYear(Utils.getTimestamp())) // Month/year node
+                .child("OtherData");
+
+        // Fetch data for the specified month/year
+        monthYearRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Retrieve category totals with default values if the category does not exist
+                    Float foodExpense = dataSnapshot.child("FoodCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float rentExpense = dataSnapshot.child("RentCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float transportExpense = dataSnapshot.child("TransportationCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float entertainmentExpense = dataSnapshot.child("EntertainmentCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float healthcareExpense = dataSnapshot.child("HealthcareCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float educationExpense = dataSnapshot.child("EducationCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float otherExpense = dataSnapshot.child("OtherCatTotal" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    if (foodExpense != null) {
+                        totFoodExpense = foodExpense;
+                    } else {
+                        totFoodExpense = 0f; // Provide a default value or handle the null case appropriately
+                    }
+                    // Handle null values by providing default values if necessary
+//                    totFoodExpense = (foodExpense != null) ? foodExpense : 0f;
+                    totRentExpense = (rentExpense != null) ? rentExpense : 0f;
+                    totTransportExpense = (transportExpense != null) ? transportExpense : 0f;
+                    totEntertainmentExpense = (entertainmentExpense != null) ? entertainmentExpense : 0f;
+                    totHealthExpense = (healthcareExpense != null) ? healthcareExpense : 0f;
+                    totEducationExpense = (educationExpense != null) ? educationExpense : 0f;
+                    totOtherExpense = (otherExpense != null) ? otherExpense : 0f;
+
+                    Log.d(TAG, "Total Food Expense: " + totFoodExpense);
+                    Log.d(TAG, "Total Rent Expense: " + totRentExpense);
+                    Log.d(TAG, "Total Transport Expense: " + totTransportExpense);
+                    Log.d(TAG, "Total Entertainment Expense: " + totEntertainmentExpense);
+                    Log.d(TAG, "Total Healthcare Expense: " + totHealthExpense);
+                    Log.d(TAG, "Total Education Expense: " + totEducationExpense);
+                    Log.d(TAG, "Total Other Expense: " + totOtherExpense);
+
+
+                    // Retrieve total expense and income with default values if not found
+                    Float totalExp = dataSnapshot.child("totalExpenseFor" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+                    Float totalInc = dataSnapshot.child("totalIncomeFor" + formatTimestampToMonthYear(Utils.getTimestamp())).getValue(Float.class);
+
+                    currentMonthExpense = (totalExp != null) ? totalExp : 0f;
+                    currentMonthIncome = (totalInc != null) ? totalInc : 0f;
+                    Log.d(TAG, "currentMonthExpense: " + currentMonthExpense);
+                    Log.d(TAG, "currentMonthIncome: " + currentMonthIncome);
+                    // Update UI with loaded data
+                    totalExpenseVal = currentMonthExpense;
+
+                    updateUI();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("TransactionActivity", "Failed to read expenses data", databaseError.toException());
+                // Handle onCancelled event, such as displaying an error message to the user
+                // or retrying the database operation
+            }
+        });
+    }
+
+    private void loadPrevMonthData() {
+        String previousMonthYear = getPreviousMonthYear();
+
+        Log.d(TAG, "previousMonthYear: " + previousMonthYear);
+
+        // Construct the database reference for the previous month/year
+        DatabaseReference previousMonthRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child(getAccountNumberFromSharedPreferences())
+                .child("Transactions")
+                .child(previousMonthYear) // Previous month/year node
+                .child("OtherData");
+
+        // Fetch data for the previous month/year
+        previousMonthRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Retrieve previous month's expense and income
+                    Float previousExpense = dataSnapshot.child("totalExpenseFor" + previousMonthYear).getValue(Float.class);
+                    Float previousIncome = dataSnapshot.child("totalIncomeFor" + previousMonthYear).getValue(Float.class);
 
 
 
-        // Sample data
+                    Log.d(TAG, "previousExpense: " + previousExpense);
+                    Log.d(TAG, "previousIncome: " + previousIncome);
+                    // Handle null values
+                    previousMontExpense = (previousExpense != null) ? previousExpense : 0f;
+                    previousMontIncome = (previousIncome != null) ? previousIncome : 0f;
+
+                    // Log the retrieved values for debugging
+                    Log.d(TAG, "Previous Month Expense: " + previousMontExpense);
+                    Log.d(TAG, "Previous Month Income: " + previousMontIncome);
+                } else {
+                    Log.d(TAG, "No data found for previous month: " + previousMonthYear);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read previous month's data", databaseError.toException());
+                // Handle onCancelled event, such as displaying an error message to the user
+                // or retrying the database operation
+            }
+        });
+    }
+
+    public static String getPreviousMonthYear() {
+        // Get the current date and time
+        Calendar calendar = Calendar.getInstance();
+
+        // Subtract one month from the current date
+        calendar.add(Calendar.MONTH, -1);
+
+        // Format the calendar's date to "MMyy" (e.g., "0324" for March 2024)
+        SimpleDateFormat sdf = new SimpleDateFormat("MMyy");
+        return sdf.format(calendar.getTime());
+    }
+
+
+    private void updateUI() {
+        // Update PieChart with dynamic data
+        PieChart pieChart = getView().findViewById(R.id.pieChart);
+        setupPieChart(pieChart);
+
+        // Update total expense TextView
+        totalExpenseTV.setText(String.format("Total Expense: %.2f", totalExpenseVal));
+
+        // Calculate and display rates
+        calculateRates();
+    }
+
+    private void setupPieChart(PieChart pieChart) {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(500f, "Food"));
-        entries.add(new PieEntry(700f, "Rent"));
-        entries.add(new PieEntry(200f, "Transport"));
-        entries.add(new PieEntry(50f, "Entertainment"));
-        entries.add(new PieEntry(300f, "Health"));
-        entries.add(new PieEntry(600f, "Education"));
-        entries.add(new PieEntry(30f, "Others"));
+        entries.add(new PieEntry(totFoodExpense, "Food"));
+        entries.add(new PieEntry(totRentExpense, "Rent"));
+        entries.add(new PieEntry(totTransportExpense, "Transport"));
+        entries.add(new PieEntry(totEntertainmentExpense, "Entertainment"));
+        entries.add(new PieEntry(totHealthExpense, "Health"));
+        entries.add(new PieEntry(totEducationExpense, "Education"));
+        entries.add(new PieEntry(totOtherExpense, "Others"));
+
 
         // Individual colors for each entry
         ArrayList<Integer> colors = new ArrayList<>();
@@ -113,6 +275,7 @@ public class StatisticsFragment extends Fragment {
         dataSet.setColors(colors); // Set individual colors for each entry
         dataSet.setDrawValues(false); // Disable drawing values on the slices
 
+
         PieData pieData = new PieData(dataSet);
         pieChart.setData(pieData);
         pieChart.getDescription().setEnabled(false); // Hide description
@@ -122,11 +285,6 @@ public class StatisticsFragment extends Fragment {
         pieChart.getDescription().setEnabled(false);
         pieChart.animateY(500);
         pieChart.invalidate();
-
-
-        totalExpenseTV.setText(String.format("Total Expense: %.2f", totalExpense));
-
-        return rootView;
     }
     private void openFinancialHealthActivity() {
         Intent intent = new Intent(getActivity(), FinancialHealthActivity.class);
@@ -159,5 +317,20 @@ public class StatisticsFragment extends Fragment {
         // Display the calculated rates in TextViews
         expenseRateTV.setText(String.format("%.2f%%", expenseRate));
         incomeRateTV.setText(String.format("%.2f%%", incomeRate));
+    }
+
+
+    private String getAccountNumberFromSharedPreferences() {
+        // Use getActivity() to get the activity associated with the fragment
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(RegisterActivity.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(RegisterActivity.ACCOUNT_NUMBER_KEY, "");
+    }
+
+
+    private String formatTimestampToMonthYear(Long timestamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMyy");
+        return sdf.format(calendar.getTime());
     }
 }
