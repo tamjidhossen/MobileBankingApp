@@ -271,7 +271,10 @@ public class SpendingActivity extends AppCompatActivity {
 
         // Calculate percentage change
         double expenseChange = currentMonthExpense - previousMontExpense;
-        double percentageChange = (expenseChange / previousMontExpense) * 100.0;
+        double percentageChange;
+
+        if(expenseChange > 0) percentageChange = (expenseChange / previousMontExpense) * 100.0;
+        else percentageChange = (expenseChange / currentMonthExpense) * 100.0;
 
         // Determine the color and sign for the UI
         String trendText;
@@ -281,7 +284,7 @@ public class SpendingActivity extends AppCompatActivity {
             trendText = String.format("+%.2f%%", Math.abs(percentageChange));
             trendColor = Color.parseColor("#800020"); // Red color
         } else if (expenseChange < 0) {
-            trendText = String.format("%.2f%%", Math.abs(percentageChange));
+            trendText = String.format("-%.2f%%", Math.abs(percentageChange));
             trendColor = Color.parseColor("#0d5e59"); //Green
         } else {
             trendText = "0.00%";
