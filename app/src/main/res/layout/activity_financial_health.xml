@@ -10,15 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/layoutBarChart"
+        android:background="@drawable/background_rounded"
+        android:backgroundTint="@color/white"
+        android:layout_margin="10dp"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:id="@+id/title1"
-            android:text="Economic health Analysis: "/>
+            android:text="financial health Analysis: "
+            android:textSize="20dp"/>
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barChart"
+            android:layout_below="@id/title1"
             android:layout_width="match_parent"
             android:layout_height="300dp"/>
 
@@ -28,9 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/expenseCard"
         android:layout_below="@id/layoutBarChart"
         android:background="@drawable/background_rounded"
+        android:backgroundTint="@color/light_blue"
         >
 
         <TextView
@@ -39,8 +46,10 @@
             android:layout_height="wrap_content"
             android:text="Income of last three month"
             android:textColor="@color/white"
-            android:textSize="25sp"
-            android:padding="4dp"/>
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="0dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -53,15 +62,15 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="22sp"
-            android:padding="1dp"/>
+          />
         <TextView
             android:id="@+id/ExpenseLastThreeMonth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Expense oflast three month"
+            android:text="Expense of last three month"
             android:textColor="@color/white"
-            android:textSize="25sp"
-            android:padding="4dp"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
             android:layout_below="@id/totLastThreeMonthIncomeId"/>
 
         <TextView
@@ -75,7 +84,7 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="22sp"
-            android:padding="1dp"/>
+            />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -85,6 +94,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/expenseCard"
         android:background="@drawable/background_rounded"
+        android:backgroundTint="@color/light_blue"
         >
 
         <TextView
@@ -102,9 +112,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Financeial health :"
+
             android:textColor="@color/white"
-            android:textSize="25dp"
-            android:padding="10dp"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_below="@id/BriefText"/>
 
         <TextView
@@ -117,8 +129,8 @@
             android:text="....."
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="25dp"
-            android:padding="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -26,13 +26,15 @@ public class FinancialHealthActivity extends AppCompatActivity {
     private TextView briefText;
     private TextView financialStatus;
 
-    private float incomelastMon_1;
-    private float incomelastMon_2;
-    private float incomelastMon_3;
+    private float incomelastMon_1=10000;
+    private float incomelastMon_2=12000;
+    private float incomelastMon_3=13000;
+    private float incomelastMon_4=10000;
 
-    private float expenselastMon_1;
-    private float expenselastMon_2;
-    private float expenselastMon_3;
+    private float expenselastMon_1=5000;
+    private float expenselastMon_2=7000;
+    private float expenselastMon_3=8000;
+    private float expenselastMon_4=7000;
     private float rate;
     private float totalLastThreeExpense=expenselastMon_1+expenselastMon_2+expenselastMon_3;
     private float totalLastThreeIncome=incomelastMon_1+incomelastMon_2+incomelastMon_3;
@@ -72,13 +74,43 @@ public class FinancialHealthActivity extends AppCompatActivity {
 
 
         if(totalLastThreeExpense<totalLastThreeIncome){
-                rate = (totalLastThreeExpense/totalLastThreeIncome)*100;
-                briefText.setText("You spend "+rate+"% of total income.");
 
+            rate = (totalLastThreeExpense/totalLastThreeIncome)*100;
+            String formattedRate = String.format("%.2f%%", rate);
+            briefText.setText("You spend "+formattedRate+" of total income.");
+            if(rate*totalLastThreeIncome < 1000){
+                financialStatus.setText("average");
+            }
+            else if(rate*totalLastThreeIncome < 3000){
+                financialStatus.setText("good");
+            }
+            else if(rate*totalLastThreeIncome < 4000){
+                financialStatus.setText("very good");
+            }
+            else if(rate*totalLastThreeIncome < 15000){
+                financialStatus.setText("excellent");
+            }else{
+                financialStatus.setText("outstanding");
+            }
         }
         else{
+            if(rate*totalLastThreeIncome < 1000){
+                financialStatus.setText("not good");
+            }
+            else if(rate*totalLastThreeIncome < 5000){
+                financialStatus.setText("bad");
+            }
+            else if(rate*totalLastThreeIncome < 10000){
+                financialStatus.setText("very bad");
+            }
+            else{
+                financialStatus.setText("devastating");
+            }
             rate=((totalLastThreeExpense-totalLastThreeIncome)/totalLastThreeIncome)*100;
-            briefText.setText("You spend "+rate+"% more than total income.");
+
+            String formattedRate = String.format("%.2f%%", rate);
+            briefText.setText("You spend " + formattedRate + " more than total income.");
+
         }
 
         // Find the BarChart view
@@ -86,10 +118,10 @@ public class FinancialHealthActivity extends AppCompatActivity {
 
         // Sample data (replace with your actual data)
         monthDataList = new ArrayList<>();
-        monthDataList.add(new MonthData("Jan", 1000f, 1600f));
-        monthDataList.add(new MonthData("Feb", 1500f, 1200f));
-        monthDataList.add(new MonthData("Mar", 2000f, 1000f));
-        monthDataList.add(new MonthData("Jan", 1000f, 1600f));
+        monthDataList.add(new MonthData("Jan", incomelastMon_1, expenselastMon_1));
+        monthDataList.add(new MonthData("Feb", incomelastMon_2, expenselastMon_2));
+        monthDataList.add(new MonthData("Mar", incomelastMon_3, expenselastMon_3));
+        monthDataList.add(new MonthData("Jan", incomelastMon_4, expenselastMon_4));
 
         // ... add data for other months
 
@@ -120,6 +152,8 @@ public class FinancialHealthActivity extends AppCompatActivity {
         BarData barData = new BarData(incomeDataSet, expenseDataSet);
         barData.setValueTextSize(16f); // Set value text size
 
+        barChart.setScaleEnabled(false);// remove all zooming
+        barChart.setDoubleTapToZoomEnabled(false);
         barChart.setData(barData);
         barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels)); // Set month labels
         barChart.getAxisLeft().setAxisMinimum(0f); // Set minimum value for Y-axis
@@ -128,7 +162,7 @@ public class FinancialHealthActivity extends AppCompatActivity {
         barChart.setPinchZoom(false); // Disable pinch zoom
         barChart.getXAxis().setDrawGridLines(false); // Remove vertical grid lines
         barChart.getAxisLeft().setDrawGridLines(false); // Remove horizontal grid lines
-        barChart.getXAxis().setDrawLabels(false); // Remove labels from the X-axis
+        barChart.getXAxis().setDrawLabels(true); // Remove labels from the X-axis
         barChart.getAxisLeft().setDrawLabels(false); // Remove labels from the Y-axis
         barChart.getDescription().setEnabled(false); // Hide chart description
         barChart.setPinchZoom(false); // Disable pinch zoom
