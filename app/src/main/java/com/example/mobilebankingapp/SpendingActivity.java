@@ -145,7 +145,7 @@ public class SpendingActivity extends AppCompatActivity {
 //                        totFoodExpense = 0f; // Provide a default value or handle the null case appropriately
 //                    }
                     // Handle null values by providing default values if necessary
-//                    totFoodExpense = (foodExpense != null) ? foodExpense : 0f;
+                    totFoodExpense = (foodExpense != null) ? foodExpense : 0f;
                     totRentExpense = (rentExpense != null) ? rentExpense : 0f;
                     totTransportExpense = (transportExpense != null) ? transportExpense : 0f;
                     totEntertainmentExpense = (entertainmentExpense != null) ? entertainmentExpense : 0f;

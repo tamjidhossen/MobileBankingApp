@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -138,6 +140,17 @@ public class FinancialHealthActivity extends AppCompatActivity {
             briefText.setText("You spend " + formattedRate + " more than total income.");
 
         }
+
+        // Initialize the toolbar back button
+        ImageButton toolbarBackBtn = findViewById(R.id.toolbarBackBtn);
+
+        // Set click listener for the toolbar back button
+        toolbarBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed(); // Handle back navigation
+            }
+        });
 
 
     }
